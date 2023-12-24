@@ -32,6 +32,7 @@ Any users who want to work for a Canadian company for a tech industry role.
 ### Frontend
 - HTML/TailwindCSS/JS
 - Chart JS, for drawing chart
+- Figma for Web design
 
 ### Backend
 - Python
@@ -43,4 +44,5 @@ Any users who want to work for a Canadian company for a tech industry role.
 - Google Colab
 
 ## User Interface (UI) Design
+Desktop application design.
 <img src="https://github.com/MounirAia/Canadian-Tech-Salary-Prediction-App/assets/86434940/a2d426a3-cfb2-4568-8b79-8c4fbef828f5" alt="Desktop Application" width="400"/>
