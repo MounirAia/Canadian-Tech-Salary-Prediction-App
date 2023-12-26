@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style href=""></style>
+    <title>Homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@100;200;300;400;500;600;700;800;900&family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./output.css" rel="stylesheet" />
+  </head>
+  <body class="">
+    <h1 class="text-4xl text-center mt-8 mb-5">Salary Prediction Tool</h1>
+
+    <header
+      class="flex px-8 py-1 border-t-4 border-b-4 border-black bg-white mb-24"
+    >
+      <nav>
+        <ul class="flex flex-row align-middle gap-16">
+          <li>
+            <h2 class="text-2xl">Home</h2>
+          </li>
+          <li>
+            <h2 class="text-2xl">Data</h2>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section
+      class="input-field grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-10"
+    >
+      <button
+        class="col-start-11 col-span-2 px-3 py-3 border-2 border-black bg-red-500 max-h-10 flex items-center justify-center"
+      >
+        Evaluate
+      </button>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="company-size"
+        id=""
+      >
+        <option disabled selected value="">Company Size</option>
+        <option value="">1</option>
+      </select>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="industry"
+        id=""
+      >
+        <option disabled selected value="">Industry</option>
+        <option value="">1</option>
+      </select>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="title"
+        id=""
+      >
+        <option disabled selected value="">Title</option>
+        <option value="">1</option>
+      </select>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="experience"
+        id=""
+      >
+        <option disabled selected value="">Experience</option>
+        <option value="">1</option>
+      </select>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="country"
+        id=""
+      >
+        <option disabled selected value="">Country</option>
+        <option value="">1</option>
+      </select>
+
+      <select
+        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
+        name="city"
+        id=""
+      >
+        <option disabled selected value="">City</option>
+        <option value="">1</option>
+      </select>
+    </section>
+
+    <section
+      class="output-field grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-24"
+    >
+      <div
+        class="col-span-3 min-h-28 px-4 py-2 border-2 border-black flex flex-col gap-5 bg-green-100"
+      >
+        <p class="text-xs">Yearly base salary in CAD</p>
+        <h2 class="text-2xl font-bold">112 000 $</h2>
+      </div>
+
+      <div
+        class="col-span-3 min-h-28 px-4 py-2 border-2 border-black flex flex-col gap-5 bg-yellow-100"
+      >
+        <p class="text-xs">Hourly rate for 40-hour week</p>
+        <h2 class="text-2xl font-bold">32$</h2>
+      </div>
+
+      <div
+        class="col-span-6 min-h-28 px-4 py-2 border-2 border-black flex flex-row gap-2 bg-red-100"
+      >
+        <div class="flex flex-col gap-1">
+          <h2 class="text-2xl font-bold">Your Support Counts</h2>
+          <p class="text-base">
+            You can enhance the machine learning model quality by helping the
+            project!
+          </p>
+        </div>
+
+        <button
+          class="border-2 border-black min-w-44 max-h-10 px-1 py-3 self-end flex justify-center items-center bg-red-500"
+        >
+          Help Us &rarr;
+        </button>
+      </div>
+    </section>
+
+    <section
+      class="dashboard grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-24"
+    >
+      <h2 class="text-2xl font-medium">Dashboard</h2>
+    </section>
+  </body>
+</html>
