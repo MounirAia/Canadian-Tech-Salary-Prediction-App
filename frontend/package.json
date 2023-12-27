@@ -13,5 +13,7 @@
   "devDependencies": {
     "tailwindcss": "^3.4.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chart.js": "^4.4.1"
+  }
 }
