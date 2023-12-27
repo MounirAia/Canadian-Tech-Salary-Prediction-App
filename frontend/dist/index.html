@@ -134,7 +134,74 @@
     <section
       class="dashboard grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-24"
     >
-      <h2 class="text-2xl font-medium">Dashboard</h2>
+      <h2 class="col-span-full text-2xl font-medium">Dashboard</h2>
+      <div class="col-span-7">
+        <table class="w-full">
+          <thead>
+            <tr
+              class="text-sm font-semibold tracking-wide text-left text-gray-900 bg-green-50 uppercase border-2 border-black"
+            >
+              <th class="px-4 py-3 border-r-2 border-black">Experience</th>
+              <th class="px-4 py-3 border-r-2 border-black">
+                Yearly Salary (CAD)
+              </th>
+              <th class="px-4 py-3">Hourly Salary (CAD)</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="">
+              <td class="px-4 py-3 text-sm font-medium border-black border-2">
+                0 to 2 years
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                112 000
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                32
+              </td>
+            </tr>
+            <tr class="">
+              <td class="px-4 py-3 text-sm font-medium border-black border-2">
+                0 to 2 years
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                112 000
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                32
+              </td>
+            </tr>
+            <tr class="">
+              <td class="px-4 py-3 text-sm font-medium border-black border-2">
+                0 to 2 years
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                112 000
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                32
+              </td>
+            </tr>
+            <tr class="">
+              <td class="px-4 py-3 text-sm font-medium border-black border-2">
+                0 to 2 years
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                112 000
+              </td>
+              <td class="px-4 py-3 text-ms font-medium border-black border-2">
+                32
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-span-5 border-2 border-black p-3">
+        <canvas id="test2"></canvas>
+      </div>
     </section>
+
+    <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="./js/my-chart.js"></script>
   </body>
 </html>
