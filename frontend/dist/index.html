@@ -8,198 +8,276 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@100;200;300;400;500;600;700;800;900&family=Rubik:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link href="./output.css" rel="stylesheet" />
   </head>
+  <!-- #E3F5FF -->
+  <!-- #F7F9FB -->
+
+  <!-- #E5ECF6 -->
+
+  <!-- #1C1C1C -->
   <body class="">
-    <h1 class="text-4xl text-center mt-8 mb-5">Salary Prediction Tool</h1>
-
-    <header
-      class="flex px-8 py-1 border-t-4 border-b-4 border-black bg-white mb-24"
+    <aside
+      class="fixed w-64 h-full flex flex-col gap-5 items-center border-r border-r-gray-300"
     >
-      <nav>
-        <ul class="flex flex-row align-middle gap-16">
-          <li>
-            <h2 class="text-2xl">Home</h2>
-          </li>
-          <li>
-            <h2 class="text-2xl">Data</h2>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <section
-      class="input-field grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-10"
-    >
-      <button
-        class="col-start-11 col-span-2 px-3 py-3 border-2 border-black bg-red-500 max-h-10 flex items-center justify-center"
-      >
-        Evaluate
-      </button>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="company-size"
-        id=""
-      >
-        <option disabled selected value="">Company Size</option>
-        <option value="">1</option>
-      </select>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="industry"
-        id=""
-      >
-        <option disabled selected value="">Industry</option>
-        <option value="">1</option>
-      </select>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="title"
-        id=""
-      >
-        <option disabled selected value="">Title</option>
-        <option value="">1</option>
-      </select>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="experience"
-        id=""
-      >
-        <option disabled selected value="">Experience</option>
-        <option value="">1</option>
-      </select>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="country"
-        id=""
-      >
-        <option disabled selected value="">Country</option>
-        <option value="">1</option>
-      </select>
-
-      <select
-        class="col-span-2 px-1 py-2 border-2 border-black h-12 block text-sm focus:outline-none"
-        name="city"
-        id=""
-      >
-        <option disabled selected value="">City</option>
-        <option value="">1</option>
-      </select>
-    </section>
-
-    <section
-      class="output-field grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-24"
-    >
-      <div
-        class="col-span-3 min-h-28 px-4 py-2 border-2 border-black flex flex-col gap-5 bg-green-100"
-      >
-        <p class="text-xs">Yearly base salary in CAD</p>
-        <h2 class="text-2xl font-bold">112 000 $</h2>
-      </div>
-
-      <div
-        class="col-span-3 min-h-28 px-4 py-2 border-2 border-black flex flex-col gap-5 bg-yellow-100"
-      >
-        <p class="text-xs">Hourly rate for 40-hour week</p>
-        <h2 class="text-2xl font-bold">32$</h2>
-      </div>
-
-      <div
-        class="col-span-6 min-h-28 px-4 py-2 border-2 border-black flex flex-row gap-2 bg-red-100"
-      >
-        <div class="flex flex-col gap-1">
-          <h2 class="text-2xl font-bold">Your Support Counts</h2>
-          <p class="text-base">
-            You can enhance the machine learning model quality by helping the
-            project!
-          </p>
-        </div>
-
-        <button
-          class="border-2 border-black min-w-44 max-h-10 px-1 py-3 self-end flex justify-center items-center bg-red-500"
+      <img src="./img/logo.png" class="object-contain" />
+      <ul class="flex flex-col text-left px-2 gap-4 w-full">
+        <li
+          class="px-2 py-2 text-2xl hover:underline bg-gray-200 w-full rounded"
         >
-          Help Us &rarr;
-        </button>
-      </div>
-    </section>
+          <a href="/">Home</a>
+        </li>
+        <li class="px-2 py-2 text-2xl hover:underline"><a href="">Data</a></li>
+        <li class="px-2 py-2 text-2xl hover:underline">
+          <a
+            href="https://github.com/MounirAia/Canadian-Tech-Salary-Prediction-App"
+            target="_blank"
+          >
+            Github Repo
+          </a>
+        </li>
+        <li class="px-2 py-2 text-2xl hover:underline">
+          <a href="mailto:m.bluth@example.com">Email</a>
+        </li>
+      </ul>
+    </aside>
 
-    <section
-      class="dashboard grid grid-cols-12 gap-x-8 gap-y-5 max-w-screen-xl mx-auto px-10 mb-24"
+    <div
+      class="grid grid-cols-1 grid-rows-[70px_1fr_150px] gap-y-10 w-full ml-64"
     >
-      <h2 class="col-span-full text-2xl font-medium">Dashboard</h2>
-      <div class="col-span-7">
-        <table class="w-full">
-          <thead>
-            <tr
-              class="text-sm font-semibold tracking-wide text-left text-gray-900 bg-green-50 uppercase border-2 border-black"
+      <header
+        class="col-span-1 flex flex-row justify-start items-center text-4xl capitalize border-b border-b-gray-300 pl-8"
+      >
+        Free Palestine
+      </header>
+
+      <main class="col-span-1 ml-8 mr-72 mb-24">
+        <section class="fields w-full mb-24">
+          <h2 class="text-2xl mb-5 font-bold">Evaluate</h2>
+          <div class="grid grid-cols-10 gap-x-8 gap-y-10">
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
-              <th class="px-4 py-3 border-r-2 border-black">Experience</th>
-              <th class="px-4 py-3 border-r-2 border-black">
-                Yearly Salary (CAD)
-              </th>
-              <th class="px-4 py-3">Hourly Salary (CAD)</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <tr class="">
-              <td class="px-4 py-3 text-sm font-medium border-black border-2">
-                0 to 2 years
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                112 000
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                32
-              </td>
-            </tr>
-            <tr class="">
-              <td class="px-4 py-3 text-sm font-medium border-black border-2">
-                0 to 2 years
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                112 000
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                32
-              </td>
-            </tr>
-            <tr class="">
-              <td class="px-4 py-3 text-sm font-medium border-black border-2">
-                0 to 2 years
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                112 000
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                32
-              </td>
-            </tr>
-            <tr class="">
-              <td class="px-4 py-3 text-sm font-medium border-black border-2">
-                0 to 2 years
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                112 000
-              </td>
-              <td class="px-4 py-3 text-ms font-medium border-black border-2">
-                32
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col-span-5 border-2 border-black p-3">
-        <canvas id="test2"></canvas>
-      </div>
-    </section>
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+            <select
+              class="col-span-1 border border-gray-300 text-sm py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option disabled selected value="">Company Size</option>
+              <option value="">1</option>
+            </select>
+
+            <button
+              class="col-start-8 col-span-3 px-3 py-3 bg-blue-200 hover:bg-blue-100 rounded max-h-10 flex items-center justify-center"
+            >
+              Evaluate
+            </button>
+            <div
+              class="col-span-2 min-h-28 p-6 flex flex-col gap-5 bg-[#E3F5FF] rounded-2xl"
+            >
+              <p class="text-base font-medium">Yearly base salary in CAD</p>
+              <h2 class="text-2xl font-bold tracking-wider">112 000 $</h2>
+            </div>
+            <div
+              class="col-span-2 min-h-28 p-6 flex flex-col gap-5 bg-[#E5ECF6] rounded-2xl"
+            >
+              <p class="text-base font-medium">Hourly rate for 40-hour week</p>
+              <h2 class="text-2xl font-bold tracking-wider">32$</h2>
+            </div>
+            <div
+              class="col-span-3 min-h-28 p-6 flex flex-row text-white bg-accent-300 rounded-2xl"
+            >
+              <div class="flex flex-col gap-5 min-w-[80%]">
+                <h2 class="text-2xl font-bold tracking-wider">
+                  Your Support Counts
+                </h2>
+                <p class="text-base font-medium">
+                  You can enhance the machine learning model quality by helping
+                  us!
+                </p>
+              </div>
+              <button
+                class="bg-white text-black text-base self-end rounded px-3 py-1 w-full"
+              >
+                Help Us &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="dashboard w-full">
+          <h2 class="text-2xl mb-5 font-bold">Dashboard</h2>
+          <div class="grid grid-cols-10 gap-8">
+            <table class="col-span-4 rounded-2xl min-h-96">
+              <thead>
+                <tr
+                  class="text-left text-sm font-semibold tracking-wide text-leftuppercase bg-[#E5ECF6]"
+                >
+                  <th class="px-4 py-3">Experience</th>
+                  <th class="px-4 py-3">Yearly Salary (CAD)</th>
+                  <th class="px-4 py-3">Hourly Salary (CAD)</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="col-span-6 p-6 bg-primary-300 rounded-xl">
+              <canvas class="bg-primary-300" id="test2"></canvas>
+            </div>
+            <div class="col-span-6 p-6 bg-primary-300 rounded-xl">
+              <canvas class="bg-primary-300" id="test3"></canvas>
+            </div>
+            <table class="col-span-4 rounded-2xl min-h-96">
+              <thead>
+                <tr
+                  class="text-left text-sm font-semibold tracking-wide text-leftuppercase bg-[#E5ECF6]"
+                >
+                  <th class="px-4 py-3">Experience</th>
+                  <th class="px-4 py-3">Yearly Salary (CAD)</th>
+                  <th class="px-4 py-3">Hourly Salary (CAD)</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="px-4 border">Yes</td>
+                  <td class="px-4 text-ms font-semibold border">22</td>
+                  <td class="px-4 text-xs border">
+                    <span
+                      class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
+                    >
+                      Acceptable
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <footer class="grid grid-cols-10 gap-x-8 pl-8 border-t border-gray-300">
+        <section class="contact col-span-2 flex flex-col gap-5">
+          <h2 class="text-2xl font-medium">Contact</h2>
+          <a class="text-base hover:underline" href="mailto:m.bluth@example.com"
+            >Email</a
+          >
+        </section>
+        <section class="github col-span-2 flex flex-col gap-5">
+          <h2 class="text-2xl font-medium">Github</h2>
+          <a
+            class="text-base hover:underline"
+            href="https://github.com/MounirAia/Canadian-Tech-Salary-Prediction-App"
+            target="_blank"
+          >
+            Github Repo
+          </a>
+        </section>
+      </footer>
+    </div>
 
     <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
     <script src="./js/my-chart.js"></script>
