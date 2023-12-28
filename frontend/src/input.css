@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: "Lexend Mega", "Rubik", sans-serif;
+  font-family: "Inter", sans-serif;
+  color: #1c1c1c;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
