@@ -1,14 +1,13 @@
 import json
 
+from db.gateway.CollectionCanada import CollectionCanada
 from flask import Flask
-from py_mongo_get_database import CollectionCanada
 
 app = Flask(__name__)
 
 
-@app.route("/api/canada-columns")
+@app.route("/api/index")
 def canada_info():
-    columns = CollectionCanada.GetColumns()
-    res = {"columns": columns}
+    obj = CollectionCanada.GetColumnsAndUniqueValues()
 
-    return json.dumps(res)
+    return json.dumps(obj)
