@@ -1,10 +1,14 @@
-from dotenv import dotenv_values
-from flask import Flask
+import json
 
-config = dotenv_values(".env")
+from flask import Flask
+from py_mongo_get_database import CollectionCanada
+
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello_world():
-    return "<h2>Hello, World!</h2>"
+@app.route("/api/canada-columns")
+def canada_info():
+    columns = CollectionCanada.GetColumns()
+    res = {"columns": columns}
+
+    return json.dumps(res)
