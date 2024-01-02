@@ -74,7 +74,6 @@
 			data: dataConfig,
 			options
 		});
-		console.log('Bar has mounted');
 	});
 </script>
 
