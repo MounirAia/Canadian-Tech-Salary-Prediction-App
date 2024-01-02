@@ -2,20 +2,26 @@
 	import Heading from '$components/base/Heading.svelte';
 	import Bar from '$components/chart/Bar.svelte';
 	import Table from '$components/chart/Table.svelte';
+	import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public';
 	import { onMount } from 'svelte';
 
 	let selectStatements: Map<string, { options: { output: string; value: string | number }[] }> =
-		new Map([
-			['Company Size', { options: [] }],
-			['Industry', { options: [] }],
-			['Title', { options: [] }],
-			['Years of Experience', { options: [] }],
-			['Country', { options: [] }],
-			['City', { options: [] }]
-		]);
+		new Map();
 
 	onMount(() => {
-		console.log('Page has mounted');
+		fetch(`${PUBLIC_BACKEND_DOMAIN}/api/index`)
+			.then((res) => res.json())
+			.then((data) => {
+				for (const key in data) {
+					const options = [];
+
+					for (const value of data[key]) {
+						options.push({ output: value, value });
+					}
+					selectStatements.set(key, { options });
+				}
+				selectStatements = new Map([...selectStatements]);
+			});
 	});
 </script>
 
@@ -111,6 +117,3 @@
 		</section>
 	</main>
 </div>
-
-<!-- <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
-<script src="./js/my-chart.js"></script>  -->
