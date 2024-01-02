@@ -22,18 +22,3 @@ if __name__ == "__main__":
 
     # Get the database
     dbname = get_database()
-
-
-class CollectionCanada:
-    CollectionName = "Canada"
-
-    @staticmethod
-    def _getCollection():
-        dbname = get_database()
-        collection = dbname[CollectionCanada.CollectionName]
-        return collection
-
-    @staticmethod
-    def GetColumns():
-        collection = CollectionCanada._getCollection()
-        return list(collection.find_one().keys())
