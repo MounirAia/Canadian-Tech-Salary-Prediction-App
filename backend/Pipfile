@@ -9,6 +9,7 @@ dev = "pipenv run flask --app app run --debug"
 [packages]
 flask = "*"
 python-dotenv = "*"
+pymongo = "*"
 
 [dev-packages]
 
