@@ -11,6 +11,9 @@ flask = "*"
 python-dotenv = "*"
 pymongo = "*"
 flask-cors = "*"
+joblib = "*"
+pandas = "==1.5.3"
+scikit-learn = "==1.2.2"
 
 [dev-packages]
 
