@@ -1,4 +1,3 @@
-import dis
 import re
 
 from db.py_mongo_get_database import get_database
@@ -7,22 +6,11 @@ from db.py_mongo_get_database import get_database
 # util function to extract the first number from a string
 def _extract_first_number(s):
     # Use regular expression to find the first number in the string
-    match = re.search(r'[0-9]*,?[0-9]*', s)
+    match = re.search(r'[0-9]*', s)
     if (match):
         return int(match.group().replace(',', ''))
     else:
         return 0
-
-
-def _formatExperienceValues(s):
-    # Define a regular expression pattern to match the year ranges
-    pattern = r'(\d+)-(\d+|\*)'
-
-    # Use re.sub() with a lambda function for custom replacements
-    modified_string = re.sub(pattern, lambda match: f'{match.group(1)} or more years' if match.group(
-        2) == '*' else f'{match.group(1)} to {match.group(2)} years', s)
-
-    return modified_string
 
 
 class CollectionCanada:
@@ -49,18 +37,13 @@ class CollectionCanada:
 
         for column in columns:
             distinctValues = list(collection.distinct(column))
-            if (column == "OrgSize" or column == "Experience"):
+            if (column == "Company Size" or column == "Experience"):
+                # Sort by the first number in the string
                 distinctValues = sorted(
                     distinctValues, key=_extract_first_number
                 )
-                if (column == "Experience"):
-                    distinctValues = list(
-                        map(_formatExperienceValues, distinctValues)
-                    )
-                elif (column == "OrgSize"):
-                    column = "Company Size"
-
             else:
+                # Alphabetic sorting
                 distinctValues = sorted(list(collection.distinct(column)))
 
             res[column] = distinctValues
