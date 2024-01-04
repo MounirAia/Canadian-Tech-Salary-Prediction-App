@@ -6,7 +6,7 @@ from db.py_mongo_get_database import get_database
 # util function to extract the first number from a string
 def _extract_first_number(s):
     # Use regular expression to find the first number in the string
-    match = re.search(r'[0-9]*', s)
+    match = re.search(r'[0-9]*,?[0-9]*', s)
     if (match):
         return int(match.group().replace(',', ''))
     else:
