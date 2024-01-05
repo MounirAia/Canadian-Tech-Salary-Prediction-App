@@ -24,7 +24,8 @@ class CanadaSalaryMLModel:
         input = pd.DataFrame(input)
 
         yearlyCadSalary = model.predict(input)
-        hourlyCadSalary = (yearlyCadSalary*1.33)/(12*4*5*8)
+        hourlyCadSalary = CanadaSalaryMLModel.ComputeHourlySalary(
+            yearlyCadSalary)
 
         output = {
             "yearly": round(list(yearlyCadSalary)[0], 2),
@@ -32,3 +33,7 @@ class CanadaSalaryMLModel:
         }
 
         return output
+
+    @staticmethod
+    def ComputeHourlySalary(yearlySalary):
+        return (yearlySalary*1.33)/(12*4*5*8)
