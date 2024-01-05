@@ -1,6 +1,8 @@
 import re
+from typing import Dict
 
 from db.py_mongo_get_database import get_database
+from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
 
 
 # util function to extract the first number from a string
@@ -15,6 +17,7 @@ def _extract_first_number(s):
 
 class CollectionCanada:
     CollectionName = "Canada"
+    _columnsAndDistinctValues = None
 
     @staticmethod
     def _getCollection():
@@ -29,11 +32,14 @@ class CollectionCanada:
 
     @staticmethod
     def GetColumnsAndUniqueValues():
+        if (CollectionCanada._columnsAndDistinctValues != None):
+            return CollectionCanada._columnsAndDistinctValues
+
         collection = CollectionCanada._getCollection()
         columns = CollectionCanada.GetColumns()
         values_to_remove = ["_id", "Salary"]
         columns = list(filter(lambda x: x not in values_to_remove, columns))
-        res = {}
+        CollectionCanada._columnsAndDistinctValues = {}
 
         for column in columns:
             distinctValues = list(collection.distinct(column))
@@ -46,6 +52,84 @@ class CollectionCanada:
                 # Alphabetic sorting
                 distinctValues = sorted(list(collection.distinct(column)))
 
-            res[column] = distinctValues
+            CollectionCanada._columnsAndDistinctValues[column] = distinctValues
 
-        return res
+        return CollectionCanada._columnsAndDistinctValues
+
+    @staticmethod
+    def GetAverageSalaryForCity(parameters: Dict[str, str]):
+        collection = CollectionCanada._getCollection()
+
+        output = {"yearly": None, "hourly": None}
+
+        City = parameters["City"]
+        Experience = parameters["Experience"]
+
+        pipeline = [
+            {
+                '$match': {
+                    'City': City
+                }
+            }, {
+                '$match': {
+                    'Experience': Experience
+                }
+            }, {
+                '$group': {
+                    '_id': None,
+                    'AverageSalary': {
+                        '$avg': '$Salary'
+                    }
+                }
+            }
+        ]
+
+        dbOutput = list(collection.aggregate(pipeline))
+        if (len(dbOutput) > 0):
+            yearly = dbOutput[0]["AverageSalary"]
+            hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
+            output = {"yearly": round(yearly, 2), "hourly": round(hourly, 2)}
+
+        return output
+
+    @staticmethod
+    def GetAverageSalaryForACityAndTitleByExperience(parameters: Dict[str, str]):
+        # Create store the schema of the object, like the columns and all the unique values the class level as a static
+
+        collection = CollectionCanada._getCollection()
+
+        City = parameters["City"]
+        Title = parameters["Title"]
+
+        output = {}
+        for category in CollectionCanada.GetColumnsAndUniqueValues()["Experience"]:
+            output[category] = None
+
+        pipeline = [
+            {
+                '$match': {
+                    'Title': Title
+                }
+            }, {
+                '$match': {
+                    'City': City
+                }
+            }, {
+                '$group': {
+                    '_id': '$Experience',
+                    'AverageSalary': {
+                        '$avg': '$Salary'
+                    }
+                }
+            }
+        ]
+
+        dbOutput = list(collection.aggregate(pipeline))
+
+        for item in dbOutput:
+            yearly = item["AverageSalary"]
+            hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
+            output[item["_id"]] = {"yearly": round(
+                yearly, 2), "hourly": round(hourly, 2)}
+
+        return output
