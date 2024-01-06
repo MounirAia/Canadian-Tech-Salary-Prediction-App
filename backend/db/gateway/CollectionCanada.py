@@ -139,6 +139,8 @@ class CollectionCanada:
 
     @staticmethod
     def GetAverageSalaryForATitleByCity(parameters: Dict[str, str]):
+        # Return a limited number of records
+
         collection = CollectionCanada._getCollection()
 
         Title = parameters["Title"]
@@ -146,7 +148,7 @@ class CollectionCanada:
 
         output = {}
         indexOfUserCity = -1
-        maxRecordLength = 10
+        maxRecordLength = 11
 
         pipeline = [
             {
@@ -189,6 +191,128 @@ class CollectionCanada:
 
                 if (index == indexOfUserCity):
                     continue
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+
+        return output
+
+    @staticmethod
+    def GetAverageSalaryForACityByTitle(parameters: Dict[str, str]):
+        # Return a limited number of records
+
+        collection = CollectionCanada._getCollection()
+
+        City = parameters["City"]
+        Title = parameters["Title"]
+
+        output = {}
+        indexOfUserTitle = -1
+        maxRecordLength = 11
+
+        pipeline = [
+            {
+                '$match': {
+                    'City': City
+                }
+            }, {
+                '$group': {
+                    '_id': '$Title',
+                    'AverageSalary': {
+                        '$avg': '$Salary'
+                    }
+                }
+            }, {
+                '$sort': {
+                    'AverageSalary': -1
+                }
+            }
+        ]
+
+        dbOutput = list(collection.aggregate(pipeline))
+
+        for index, item in enumerate(dbOutput):
+            if (item["_id"] == Title):
+                indexOfUserTitle = index
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+                output["user"] = item["_id"]
+
+        if indexOfUserTitle == -1:
+            maxIndex = maxRecordLength if len(
+                dbOutput) >= maxRecordLength else len(dbOutput)
+
+            for index, item in enumerate(dbOutput[:maxIndex]):
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+        else:
+            for index, item in enumerate(dbOutput):
+                if len(output) >= maxRecordLength:
+                    break
+
+                if (index == indexOfUserTitle):
+                    continue
+
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+
+        return output
+
+    @staticmethod
+    def GetAverageSalaryForACityByIndustry(parameters: Dict[str, str]):
+        # Return a limited number of records
+
+        collection = CollectionCanada._getCollection()
+
+        City = parameters["City"]
+        Industry = parameters["Industry"]
+
+        output = {}
+        indexOfUserTitle = -1
+        maxRecordLength = 5
+
+        pipeline = [
+            {
+                '$match': {
+                    'City': City
+                }
+            }, {
+                '$group': {
+                    '_id': '$Industry',
+                    'AverageSalary': {
+                        '$avg': '$Salary'
+                    }
+                }
+            }, {
+                '$sort': {
+                    'AverageSalary': -1
+                }
+            }
+        ]
+
+        dbOutput = list(collection.aggregate(pipeline))
+
+        for index, item in enumerate(dbOutput):
+            if (item["_id"] == Industry):
+                indexOfUserTitle = index
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+                output["user"] = item["_id"]
+
+        if indexOfUserTitle == -1:
+            maxIndex = maxRecordLength if len(
+                dbOutput) >= maxRecordLength else len(dbOutput)
+
+            for index, item in enumerate(dbOutput[:maxIndex]):
+                yearly = item["AverageSalary"]
+                output[item["_id"]] = round(yearly, 2)
+        else:
+            for index, item in enumerate(dbOutput):
+                if len(output) >= maxRecordLength:
+                    break
+
+                if (index == indexOfUserTitle):
+                    continue
+
                 yearly = item["AverageSalary"]
                 output[item["_id"]] = round(yearly, 2)
 
