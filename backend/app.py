@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
 
-# Loading the environment variables
+# Loading the environment variables [choose between production var or dev var(comming from .env file)]
 isProd = os.getenv('PRODUCTION', None)
 if not (isProd):
     from dotenv import load_dotenv
@@ -35,27 +35,30 @@ def salary_info():
     res["overview"] = {}
     res["dashboard"] = {}
     # Overview:
-    # 1) Get the Annual Salary Info and the Hourly Salary Info
+    # 1) Get the Annual Salary Info and the Hourly Salary Info predicted by the model
     salaries = CanadaSalaryMLModel.predict(data)
     res["overview"]["userSalary"] = salaries
 
-    # 2) Get the Average yearly and hourly salary for the given city (any role) and experience
+    # 2) Get the Average yearly and hourly salary for the given city (any role) and experience (user's experience)
     averageSalaryForCity = CollectionCanada.GetAverageSalaryForCity(
         {"City": data["City"], "Experience": data["Experience"]})
     res["overview"]["averageSalaryForCity"] = averageSalaryForCity
 
     # Dashboard: For each category, add a highlighted value for the frontend to know which one is selected
-    # 1) Get the salary info per experience
+
+    # 1) Get the salary info per experience for the given role and city
     res["dashboard"]["AverageSalaryPerExperience"] = CollectionCanada.GetAverageSalaryForACityAndTitleByExperience(
         {"City": data["City"], "Title": data["Title"], "Experience": data["Experience"]})
 
     # 2) Get the average salary for the given role per city
-    # 2.1) Limit for certain Canadian cities [Toronto, Vancouver, Montreal, Ottawa, Calgary, Edmonton, Quebec City, Winnipeg, Hamilton, Kitchener]
     res["dashboard"]["AverageSalaryPerCity"] = CollectionCanada.GetAverageSalaryForATitleByCity(
         {"Title": data["Title"], "City": data["City"]})
 
-    # 3) Get the average salary per role in the city
-    # 3.1) Limit for certain role [full stack, front end, back end, QA, devops, datascientist]
-    # 4) Get the salary info for some industry
+    # 3) Get the average salary per role for the given city
+    res["dashboard"]["AverageSalaryPerTitle"] = CollectionCanada.GetAverageSalaryForACityByTitle(
+        {"Title": data["Title"], "City": data["City"]})
 
+    # 4) Get the salary info for a city some industry
+    res["dashboard"]["AverageSalaryPerIndustry"] = CollectionCanada.GetAverageSalaryForACityByIndustry(
+        {"City": data["City"], "Industry": data["Industry"]})
     return jsonify(res)
