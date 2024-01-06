@@ -28,7 +28,7 @@ def canada_info():
 @app.route("/api/salary", methods=['POST'])
 def salary_info():
     # Create the queries and build the object
-    #  Then refactor using motor, to leverage async
+    # Then refactor using motor, to leverage async
 
     data = request.get_json()
     res = {}
@@ -47,12 +47,13 @@ def salary_info():
     # Dashboard: For each category, add a highlighted value for the frontend to know which one is selected
     # 1) Get the salary info per experience
     res["dashboard"]["AverageSalaryPerExperience"] = CollectionCanada.GetAverageSalaryForACityAndTitleByExperience(
-        {"City": data["City"], "Title": data["Title"]})
-
-    print(res["dashboard"]["AverageSalaryPerExperience"])
+        {"City": data["City"], "Title": data["Title"], "Experience": data["Experience"]})
 
     # 2) Get the average salary for the given role per city
     # 2.1) Limit for certain Canadian cities [Toronto, Vancouver, Montreal, Ottawa, Calgary, Edmonton, Quebec City, Winnipeg, Hamilton, Kitchener]
+    res["dashboard"]["AverageSalaryPerCity"] = CollectionCanada.GetAverageSalaryForATitleByCity(
+        {"Title": data["Title"], "City": data["City"]})
+
     # 3) Get the average salary per role in the city
     # 3.1) Limit for certain role [full stack, front end, back end, QA, devops, datascientist]
     # 4) Get the salary info for some industry
