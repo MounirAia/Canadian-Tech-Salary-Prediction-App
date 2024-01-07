@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-from db.py_mongo_get_database import get_database
+from db.get_database import get_database
 from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
 
 
@@ -26,23 +26,24 @@ class CollectionCanada:
         return collection
 
     @staticmethod
-    def GetColumns():
+    async def GetColumns():
         collection = CollectionCanada._getCollection()
-        return list(collection.find_one().keys())
+        element = await collection.find_one()
+        return list(element.keys())
 
     @staticmethod
-    def GetColumnsAndUniqueValues():
+    async def GetColumnsAndUniqueValues():
         if (CollectionCanada._columnsAndDistinctValues != None):
             return CollectionCanada._columnsAndDistinctValues
 
         collection = CollectionCanada._getCollection()
-        columns = CollectionCanada.GetColumns()
+        columns = await CollectionCanada.GetColumns()
         values_to_remove = ["_id", "Salary"]
         columns = list(filter(lambda x: x not in values_to_remove, columns))
         CollectionCanada._columnsAndDistinctValues = {}
 
         for column in columns:
-            distinctValues = list(collection.distinct(column))
+            distinctValues = list(await collection.distinct(column))
             if (column == "Company Size" or column == "Experience"):
                 # Sort by the first number in the string
                 distinctValues = sorted(
@@ -50,14 +51,14 @@ class CollectionCanada:
                 )
             else:
                 # Alphabetic sorting
-                distinctValues = sorted(list(collection.distinct(column)))
+                distinctValues = sorted(distinctValues)
 
             CollectionCanada._columnsAndDistinctValues[column] = distinctValues
 
         return CollectionCanada._columnsAndDistinctValues
 
     @staticmethod
-    def GetAverageSalaryForCity(parameters: Dict[str, str]):
+    async def GetAverageSalaryForCity(parameters: Dict[str, str]):
         collection = CollectionCanada._getCollection()
 
         output = {"yearly": None, "hourly": None}
@@ -84,7 +85,9 @@ class CollectionCanada:
             }
         ]
 
-        dbOutput = list(collection.aggregate(pipeline))
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
+
         if (len(dbOutput) > 0):
             yearly = dbOutput[0]["AverageSalary"]
             hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
@@ -93,7 +96,7 @@ class CollectionCanada:
         return output
 
     @staticmethod
-    def GetAverageSalaryForACityAndTitleByExperience(parameters: Dict[str, str]):
+    async def GetAverageSalaryForACityAndTitleByExperience(parameters: Dict[str, str]):
         # Create store the schema of the object, like the columns and all the unique values the class level as a static
 
         collection = CollectionCanada._getCollection()
@@ -103,7 +106,9 @@ class CollectionCanada:
         Experience = parameters["Experience"]
 
         output = {}
-        for category in CollectionCanada.GetColumnsAndUniqueValues()["Experience"]:
+        uniqueValuesOfExperienceColumns = (await CollectionCanada.GetColumnsAndUniqueValues())["Experience"]
+
+        for category in uniqueValuesOfExperienceColumns:
             output[category] = None
 
         pipeline = [
@@ -125,7 +130,8 @@ class CollectionCanada:
             }
         ]
 
-        dbOutput = list(collection.aggregate(pipeline))
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
 
         for item in dbOutput:
             yearly = item["AverageSalary"]
@@ -138,7 +144,7 @@ class CollectionCanada:
         return output
 
     @staticmethod
-    def GetAverageSalaryForATitleByCity(parameters: Dict[str, str]):
+    async def GetAverageSalaryForATitleByCity(parameters: Dict[str, str]):
         # Return a limited number of records
 
         collection = CollectionCanada._getCollection()
@@ -169,7 +175,8 @@ class CollectionCanada:
             }
         ]
 
-        dbOutput = list(collection.aggregate(pipeline))
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
 
         for index, item in enumerate(dbOutput):
             if (item["_id"] == City):
@@ -197,7 +204,7 @@ class CollectionCanada:
         return output
 
     @staticmethod
-    def GetAverageSalaryForACityByTitle(parameters: Dict[str, str]):
+    async def GetAverageSalaryForACityByTitle(parameters: Dict[str, str]):
         # Return a limited number of records
 
         collection = CollectionCanada._getCollection()
@@ -228,7 +235,8 @@ class CollectionCanada:
             }
         ]
 
-        dbOutput = list(collection.aggregate(pipeline))
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
 
         for index, item in enumerate(dbOutput):
             if (item["_id"] == Title):
@@ -258,7 +266,7 @@ class CollectionCanada:
         return output
 
     @staticmethod
-    def GetAverageSalaryForACityByIndustry(parameters: Dict[str, str]):
+    async def GetAverageSalaryForACityByIndustry(parameters: Dict[str, str]):
         # Return a limited number of records
 
         collection = CollectionCanada._getCollection()
@@ -289,7 +297,8 @@ class CollectionCanada:
             }
         ]
 
-        dbOutput = list(collection.aggregate(pipeline))
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
 
         for index, item in enumerate(dbOutput):
             if (item["_id"] == Industry):

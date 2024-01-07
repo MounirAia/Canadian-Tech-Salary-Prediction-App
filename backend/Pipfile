@@ -8,10 +8,7 @@ dev = "pipenv run quart run --reload"
 prod = "pipenv run hypercorn app:app"
 
 [packages]
-flask = "*"
 python-dotenv = "*"
-pymongo = "*"
-flask-cors = "*"
 joblib = "*"
 pandas = "==1.5.3"
 scikit-learn = "==1.2.2"

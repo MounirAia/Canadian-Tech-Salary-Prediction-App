@@ -1,6 +1,6 @@
 import os
 
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 
 # If you want to run this file alone, uncomment the following lines
 
@@ -18,7 +18,7 @@ def get_database():
     databaseName = "SalaryPrediction"
 
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-    client = MongoClient(CONNECTION_STRING)
+    client = AsyncIOMotorClient(CONNECTION_STRING)
 
     db = client[databaseName]
     # Create the database for our example (we will use the same database throughout the tutorial
