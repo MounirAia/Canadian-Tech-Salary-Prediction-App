@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from db.gateway.CollectionCanada import CollectionCanada
@@ -20,46 +21,53 @@ CORS(app, allow_origin=[os.getenv("ALLOWED_DOMAINS")])
 
 @app.route("/api/index")
 async def canada_info():
-    obj = CollectionCanada.GetColumnsAndUniqueValues()
+    obj = await CollectionCanada.GetColumnsAndUniqueValues()
 
     return jsonify(obj)
 
 
 @app.route("/api/salary", methods=['POST'])
 async def salary_info():
-    # Create the queries and build the object
-    # Then refactor using motor, to leverage async
-
     data = await request.get_json()
     res = {}
     res["overview"] = {}
     res["dashboard"] = {}
-    # Overview:
-    # 1) Get the Annual Salary Info and the Hourly Salary Info predicted by the model
+
+    overviewAverageSalaryForCity, dashboardAverageSalaryPerExperience, dashboardAverageSalaryPerCity, dashboardAverageSalaryPerTitle, dashboardAverageSalaryPerIndustry = await asyncio.gather(
+        CollectionCanada.GetAverageSalaryForCity(
+            {"City": data["City"], "Experience": data["Experience"]}),
+        CollectionCanada.GetAverageSalaryForACityAndTitleByExperience(
+            {"City": data["City"], "Title": data["Title"], "Experience": data["Experience"]}),
+        CollectionCanada.GetAverageSalaryForATitleByCity(
+            {"Title": data["Title"], "City": data["City"]}),
+        CollectionCanada.GetAverageSalaryForACityByTitle(
+            {"Title": data["Title"], "City": data["City"]}),
+        CollectionCanada.GetAverageSalaryForACityByIndustry(
+            {"City": data["City"], "Industry": data["Industry"]})
+    )
+
     salaries = CanadaSalaryMLModel.predict(data)
+
+    # Overview:
+
+    # 1) Get the Annual Salary Info and the Hourly Salary Info predicted by the model
     res["overview"]["userSalary"] = salaries
 
     # 2) Get the Average yearly and hourly salary for the given city (any role) and experience (user's experience)
-    averageSalaryForCity = CollectionCanada.GetAverageSalaryForCity(
-        {"City": data["City"], "Experience": data["Experience"]})
-    res["overview"]["averageSalaryForCity"] = averageSalaryForCity
+    res["overview"]["averageSalaryForCity"] = overviewAverageSalaryForCity
 
-    # Dashboard: For each category, add a highlighted value for the frontend to know which one is selected
+    # Dashboard: For each category, add a highlighted value for the frontend to know which one the user should compare with
 
     # 1) Get the salary info per experience for the given role and city
-    res["dashboard"]["AverageSalaryPerExperience"] = CollectionCanada.GetAverageSalaryForACityAndTitleByExperience(
-        {"City": data["City"], "Title": data["Title"], "Experience": data["Experience"]})
+    res["dashboard"]["AverageSalaryPerExperience"] = dashboardAverageSalaryPerExperience
 
     # 2) Get the average salary for the given role per city
-    res["dashboard"]["AverageSalaryPerCity"] = CollectionCanada.GetAverageSalaryForATitleByCity(
-        {"Title": data["Title"], "City": data["City"]})
+    res["dashboard"]["AverageSalaryPerCity"] = dashboardAverageSalaryPerCity
 
     # 3) Get the average salary per role for the given city
-    res["dashboard"]["AverageSalaryPerTitle"] = CollectionCanada.GetAverageSalaryForACityByTitle(
-        {"Title": data["Title"], "City": data["City"]})
+    res["dashboard"]["AverageSalaryPerTitle"] = dashboardAverageSalaryPerTitle
 
     # 4) Get the salary info for a city some industry
-    res["dashboard"]["AverageSalaryPerIndustry"] = CollectionCanada.GetAverageSalaryForACityByIndustry(
-        {"City": data["City"], "Industry": data["Industry"]})
+    res["dashboard"]["AverageSalaryPerIndustry"] = dashboardAverageSalaryPerIndustry
 
     return jsonify(res)
