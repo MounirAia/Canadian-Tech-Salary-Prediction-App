@@ -4,7 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-dev = "pipenv run flask --app app run --debug"
+dev = "pipenv run quart run --reload"
+prod = "pipenv run hypercorn app:app"
 
 [packages]
 flask = "*"
@@ -14,6 +15,10 @@ flask-cors = "*"
 joblib = "*"
 pandas = "==1.5.3"
 scikit-learn = "==1.2.2"
+quart = "*"
+quart-cors = "*"
+hypercorn = "*"
+motor = "*"
 
 [dev-packages]
 

@@ -1,9 +1,9 @@
 import os
 
 from db.gateway.CollectionCanada import CollectionCanada
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
+from quart import Quart, jsonify, request
+from quart_cors import cors as CORS
 
 # Loading the environment variables [choose between production var or dev var(comming from .env file)]
 isProd = os.getenv('PRODUCTION', None)
@@ -11,26 +11,26 @@ if not (isProd):
     from dotenv import load_dotenv
     load_dotenv()
 
-# Setting up the Flask app
-app = Flask(__name__)
+# Setting up the Quart app
+app = Quart(__name__)
 # To prevent flask from ordering the json keys returned by jsonify
 app.json.sort_keys = False
-CORS(app, origins=[os.getenv("ALLOWED_DOMAINS")])
+CORS(app, allow_origin=[os.getenv("ALLOWED_DOMAINS")])
 
 
 @app.route("/api/index")
-def canada_info():
+async def canada_info():
     obj = CollectionCanada.GetColumnsAndUniqueValues()
 
     return jsonify(obj)
 
 
 @app.route("/api/salary", methods=['POST'])
-def salary_info():
+async def salary_info():
     # Create the queries and build the object
     # Then refactor using motor, to leverage async
 
-    data = request.get_json()
+    data = await request.get_json()
     res = {}
     res["overview"] = {}
     res["dashboard"] = {}
@@ -61,4 +61,5 @@ def salary_info():
     # 4) Get the salary info for a city some industry
     res["dashboard"]["AverageSalaryPerIndustry"] = CollectionCanada.GetAverageSalaryForACityByIndustry(
         {"City": data["City"], "Industry": data["Industry"]})
+
     return jsonify(res)
