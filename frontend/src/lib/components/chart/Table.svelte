@@ -6,13 +6,7 @@
 	export let tableRows: (string | number)[][] = [];
 	export let tableData:
 		| {
-				[key: string]:
-					| {
-							yearly: number;
-							hourly: number;
-					  }
-					| string
-					| null;
+				[key: string]: any;
 		  }
 		| undefined = undefined;
 

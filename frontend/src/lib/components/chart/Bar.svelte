@@ -16,6 +16,34 @@
 		'Label 10'
 	];
 	export let data = [12, 19, 3, 5, 44, 12, 3, 1, 3, 66];
+
+	export let objData: { [key: string]: any } | undefined;
+
+	export let barToHighlight: string | null = null;
+
+	let backgroundColor: string | string[] = '#b6c4cc';
+
+	if (objData) {
+		data = Object.values(objData);
+		labels = Object.keys(objData);
+		const unecessaryIndex = labels.indexOf('user');
+		if (unecessaryIndex > -1) {
+			labels.splice(unecessaryIndex, 1);
+			data.splice(unecessaryIndex, 1);
+		}
+
+		if (barToHighlight) {
+			backgroundColor = [];
+			for (let i = 0; i < labels.length; i++) {
+				if (labels[i] === barToHighlight) {
+					backgroundColor[i] = '#818cf8';
+					continue;
+				}
+				backgroundColor[i] = '#b6c4cc';
+			}
+		}
+	}
+
 	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
@@ -24,7 +52,7 @@
 			labels,
 			datasets: [
 				{
-					backgroundColor: '#b6c4cc', // Color for bars
+					backgroundColor: backgroundColor, // Color for bars
 					borderRadius: 10,
 					// borderWidth: 2, // Border width for bars
 					data // Actual data values
@@ -61,10 +89,14 @@
 					align: 'start',
 					padding: {
 						top: 0,
-						bottom: 20
+						bottom: 30
 					}
+				},
+				legend: {
+					display: false
 				}
 			},
+
 			maintainAspectRatio: false
 		};
 
