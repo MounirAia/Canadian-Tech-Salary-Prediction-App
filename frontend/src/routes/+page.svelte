@@ -90,8 +90,6 @@
 				user: '5 to 9 years'
 			},
 			AverageSalaryPerCity: {
-				'Montréal Region': 59627.41,
-				user: 'Montréal Region',
 				'Edmonton Region': 142008.06,
 				'Lower Mainland–Southwest Region': 86969.7,
 				'Hamilton–Niagara Peninsula Region': 83632.79,
@@ -100,11 +98,12 @@
 				'Kingston–Pembroke Region': 63249.92,
 				'Halifax Region': 63188.46,
 				'Vancouver Island and Coast Region': 62927.33,
-				'Winnipeg Region': 61371.74
+				'Winnipeg Region': 61371.74,
+				'Annapolis Valley Region': 60231.0,
+				'Montréal Region': 59627.41,
+				user: 'Montréal Region'
 			},
 			AverageSalaryPerTitle: {
-				'Developer, back-end': 59627.41,
-				user: 'Developer, back-end',
 				'Engineering manager': 134997.91,
 				'Senior Executive (C-Suite, VP, etc.)': 134989.67,
 				'Product manager': 134610.33,
@@ -113,14 +112,12 @@
 				'Developer, game or graphics': 88573.0,
 				'Database administrator': 85378.0,
 				'Developer, QA or test': 85111.5,
-				'DevOps specialist': 83101.25
+				'DevOps specialist': 83101.25,
+				'Hardware Engineer': 80547.67,
+				'Developer, back-end': 59627.41,
+				user: 'Developer, back-end'
 			},
 			AverageSalaryPerIndustry: {
-				Healthcare: {
-					yearly: 60216.22,
-					hourly: 41.71
-				},
-				user: 'Healthcare',
 				Insurance: {
 					yearly: 96950.5,
 					hourly: 67.16
@@ -132,7 +129,16 @@
 				'Higher Education': {
 					yearly: 82646.0,
 					hourly: 57.25
-				}
+				},
+				'Information Services, IT, Software Development, or other Technology': {
+					yearly: 80499.33,
+					hourly: 55.76
+				},
+				Healthcare: {
+					yearly: 60216.22,
+					hourly: 41.71
+				},
+				user: 'Healthcare'
 			}
 		}
 	};
@@ -253,13 +259,19 @@
 					</div>
 
 					<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
-						<Bar title="Average Salaries in 10 Canadian Cities" />
+						<Bar
+							title="Average Salaries in 10 Canadian Cities"
+							objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
+							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
+						/>
 					</div>
 					<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
 						<Bar
 							title="Average Salary per Role in the City"
 							labels={['a', 'b', 'c']}
 							data={[1, 2, 3]}
+							objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
+							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
 						/>
 					</div>
 					<div class="col-span-4 flex flex-col gap-4 bg-secondary-300 rounded-xl p-6">
