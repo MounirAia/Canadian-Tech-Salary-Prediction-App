@@ -91,7 +91,8 @@ class CollectionCanada:
         if (len(dbOutput) > 0):
             yearly = dbOutput[0]["AverageSalary"]
             hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
-            output = {"yearly": round(yearly, 2), "hourly": round(hourly, 2)}
+            output = {"yearly": round(yearly, 2), "hourly": round(
+                hourly, 2), "userCity": City, "userExperience": Experience}
 
         return output
 
@@ -304,7 +305,9 @@ class CollectionCanada:
             if (item["_id"] == Industry):
                 indexOfUserTitle = index
                 yearly = item["AverageSalary"]
-                output[item["_id"]] = round(yearly, 2)
+                hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
+                output[item["_id"]] = {"yearly": round(
+                    yearly, 2), "hourly": round(hourly, 2)}
                 output["user"] = item["_id"]
 
         if indexOfUserTitle == -1:
@@ -323,6 +326,8 @@ class CollectionCanada:
                     continue
 
                 yearly = item["AverageSalary"]
-                output[item["_id"]] = round(yearly, 2)
+                hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
+                output[item["_id"]] = {"yearly": round(
+                    yearly, 2), "hourly": round(hourly, 2)}
 
         return output
