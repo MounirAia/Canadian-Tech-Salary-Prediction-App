@@ -179,12 +179,12 @@ class CollectionCanada:
         cursor = collection.aggregate(pipeline)
         dbOutput = await cursor.to_list(length=None)
 
+        # Find the salary of the user's city
         for index, item in enumerate(dbOutput):
             if (item["_id"] == City):
                 indexOfUserCity = index
                 yearly = item["AverageSalary"]
                 output[item["_id"]] = round(yearly, 2)
-                output["user"] = item["_id"]
 
         if indexOfUserCity == -1:
             maxIndex = maxRecordLength if len(
@@ -201,6 +201,11 @@ class CollectionCanada:
                     continue
                 yearly = item["AverageSalary"]
                 output[item["_id"]] = round(yearly, 2)
+
+        output = {k: v for k, v in sorted(
+            output.items(), key=lambda item: item[1], reverse=True)}
+
+        output["user"] = City
 
         return output
 
@@ -244,7 +249,6 @@ class CollectionCanada:
                 indexOfUserTitle = index
                 yearly = item["AverageSalary"]
                 output[item["_id"]] = round(yearly, 2)
-                output["user"] = item["_id"]
 
         if indexOfUserTitle == -1:
             maxIndex = maxRecordLength if len(
@@ -263,6 +267,11 @@ class CollectionCanada:
 
                 yearly = item["AverageSalary"]
                 output[item["_id"]] = round(yearly, 2)
+
+        output = {k: v for k, v in sorted(
+            output.items(), key=lambda item: item[1], reverse=True)}
+
+        output["user"] = Title
 
         return output
 
@@ -308,7 +317,6 @@ class CollectionCanada:
                 hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
                 output[item["_id"]] = {"yearly": round(
                     yearly, 2), "hourly": round(hourly, 2)}
-                output["user"] = item["_id"]
 
         if indexOfUserTitle == -1:
             maxIndex = maxRecordLength if len(
@@ -329,5 +337,10 @@ class CollectionCanada:
                 hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
                 output[item["_id"]] = {"yearly": round(
                     yearly, 2), "hourly": round(hourly, 2)}
+
+        output = {k: v for k, v in sorted(
+            output.items(), key=lambda item: item[1]["yearly"], reverse=True)}
+
+        output["user"] = Industry
 
         return output
