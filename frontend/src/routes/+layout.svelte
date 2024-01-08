@@ -36,7 +36,9 @@
 	</ul>
 </aside>
 
-<slot />
+<div class="min-h-screen w-full">
+	<slot />
+</div>
 
 <footer class="w-full ml-64 h-40 grid grid-cols-10 gap-x-8 p-4 pl-8 border-t border-gray-300">
 	<section class="contact col-span-2 flex flex-col gap-5">
