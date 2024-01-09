@@ -286,7 +286,7 @@ class CollectionCanada:
 
         output = {}
         indexOfUserTitle = -1
-        maxRecordLength = 5
+        maxRecordLength = 4
 
         pipeline = [
             {
