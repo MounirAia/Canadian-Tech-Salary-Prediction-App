@@ -176,217 +176,222 @@
 	}
 </script>
 
-<div class="grid grid-cols-1 grid-rows-1 gap-y-10 w-full mt-16 ml-64">
-	<main class="col-span-1 ml-8 mr-72 mb-24">
-		<section class="fields w-full mb-24">
-			<Heading headingType="h2" customClass="mb-5">Evaluate</Heading>
-			<form class="grid grid-cols-12 gap-x-8 mb-24" on:submit|preventDefault={onSubmit}>
-				<div class="col-span-10 flex flex-row gap-4 justify-between">
-					{#each [...selectStatements] as [title, { options }]}
-						<select
-							bind:value={selectedValues[title]}
-							class="w-full py-3 px-4 border border-gray-400 text-sm rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-							required
-							disabled={title === 'Country'}
-						>
-							<option disabled selected value="">{title === 'Country' ? 'Canada' : title}</option>
-							{#each options as option}
-								<option value={option.value}>{option.output}</option>
-							{/each}
-						</select>
-					{/each}
-				</div>
-
-				<button
-					class="col-span-2 px-3 py-3 bg-blue-200 hover:bg-blue-100 rounded max-h-10 flex items-center justify-center"
-					type="submit"
+<main class="w-full px-4 mb-24 xl:px-8">
+	<section class="w-full mb-24 fields">
+		<Heading headingType="h2" customClass="mb-5">Evaluate</Heading>
+		<form class="grid mb-24 form-grid gap-x-8 gap-y-4" on:submit|preventDefault={onSubmit}>
+			{#each [...selectStatements] as [title, { options }]}
+				<select
+					bind:value={selectedValues[title]}
+					class="w-full px-4 py-3 text-sm leading-tight border border-gray-400 rounded focus:outline-none focus:bg-white focus:border-gray-500"
+					required
+					disabled={title === 'Country'}
 				>
-					Evaluate
-				</button>
-			</form>
-		</section>
-		<section class="overview mb-24">
-			<Heading headingType="h2" customClass="mb-5">Overview</Heading>
-			<div class="grid grid-cols-12 gap-x-8">
-				<OverviewCard
-					color="bg-primary-400"
-					width="col-span-3"
-					title="Predicted Yearly base salary (CAD)"
-					value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.yearly)}
-				/>
+					<option disabled selected value="">{title === 'Country' ? 'Canada' : title}</option>
+					{#each options as option}
+						<option value={option.value}>{option.output}</option>
+					{/each}
+				</select>
+			{/each}
 
-				<OverviewCard
-					color="bg-secondary-400"
-					width="col-span-3"
-					title="Predicted Hourly rate for 40-hour week"
-					value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.hourly)}
-				/>
+			<button
+				class="flex items-center justify-center px-3 py-3 bg-blue-200 rounded hover:bg-blue-100 max-h-10"
+				type="submit"
+			>
+				Evaluate
+			</button>
+		</form>
+	</section>
+	<section class="mb-24 overview">
+		<Heading headingType="h2" customClass="mb-5">Overview</Heading>
+		<div class="grid sm:grid-cols-3 lg:grid-cols-6 2xl:grid-cols-12 gap-y-5 gap-x-8">
+			<OverviewCard
+				color="bg-primary-400"
+				width="col-span-3"
+				title="Predicted Yearly base salary (CAD)"
+				value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.yearly)}
+			/>
 
-				<OverviewCard
-					color="bg-primary-400"
-					width="col-span-3"
-					title="Average Yearly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-						.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-						.userExperience} Exp. (CAD)"
-					value={formatNumberToDollar(
-						overviewAndDashboardData.overview.averageSalaryForCity.yearly
-					)}
-				/>
+			<OverviewCard
+				color="bg-secondary-400"
+				width="col-span-3"
+				title="Predicted Hourly rate for 40-hour week"
+				value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.hourly)}
+			/>
 
-				<OverviewCard
-					color="bg-secondary-400"
-					width="col-span-3"
-					title="Average Hourly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-						.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-						.userExperience} Exp. (CAD)"
-					value={formatNumberToDollar(
-						overviewAndDashboardData.overview.averageSalaryForCity.hourly
-					)}
+			<OverviewCard
+				color="bg-primary-400"
+				width="col-span-3"
+				title="Average Yearly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
+					.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
+					.userExperience} Exp. (CAD)"
+				value={formatNumberToDollar(overviewAndDashboardData.overview.averageSalaryForCity.yearly)}
+			/>
+
+			<OverviewCard
+				color="bg-secondary-400"
+				width="col-span-3"
+				title="Average Hourly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
+					.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
+					.userExperience} Exp. (CAD)"
+				value={formatNumberToDollar(overviewAndDashboardData.overview.averageSalaryForCity.hourly)}
+			/>
+		</div>
+	</section>
+	<section class="w-full dashboard">
+		<Heading headingType="h2" customClass="mb-5">Dashboard</Heading>
+		<p class="mb-5 text-base font-medium">
+			This dashboard serves as a visual representation of the data used to build the machine
+			learning model.
+		</p>
+		<div class="grid grid-cols-10 gap-8">
+			<div
+				class="flex flex-col order-1 gap-4 p-2 col-span-full 2xl:col-span-4 bg-secondary-300 rounded-xl xl:p-6"
+			>
+				<Heading headingType="h4"
+					>{`Average ${selectedValues['Title']} Salary in ${selectedValues['City']} by Experience`}</Heading
+				>
+				<Table
+					tableWidth="w-full"
+					tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
+					tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
+					rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerExperience.user}
 				/>
 			</div>
-		</section>
-		<section class="dashboard w-full">
-			<Heading headingType="h2" customClass="mb-5">Dashboard</Heading>
-			<p class="text-base font-medium mb-5">
-				This dashboard serves as a visual representation of the data used to build the machine
-				learning model.
-			</p>
-			<div class="grid grid-cols-10 gap-8">
-				<div class="col-span-4 flex flex-col gap-4 bg-secondary-300 rounded-xl p-6">
-					<Heading headingType="h4"
-						>{`Average ${selectedValues['Title']} Salary in ${selectedValues['City']} by Experience`}</Heading
-					>
-					<Table
-						tableWidth="w-full"
-						tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-						tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
-						rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerExperience.user}
-					/>
-				</div>
 
-				<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
-					<Bar
-						title={`Average ${selectedValues['Title']} Salary in Canadian Cities`}
-						objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
-						barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
-					/>
-				</div>
-				<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
-					<Bar
-						title={`Average Salary per Title in ${selectedValues['City']}`}
-						objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
-						barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
-					/>
-				</div>
-				<div class="col-span-4 flex flex-col gap-4 bg-secondary-300 rounded-xl p-6">
-					<Heading headingType="h4"
-						>{`Average Salary in ${selectedValues['City']} by Industry`}</Heading
-					>
-					<Table
-						tableWidth="col-span-4"
-						tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-						tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
-						rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry.user}
-					/>
-				</div>
+			<div
+				class="order-2 p-2 col-span-full 2xl:col-span-6 min-h-96 xl:p-6 bg-secondary-300 rounded-xl"
+			>
+				<Bar
+					title={`Average ${selectedValues['Title']} Salary (CAD) in Canadian Cities`}
+					objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
+					barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
+				/>
 			</div>
-		</section>
-		{#if salaryDataPromise}
-			{#await salaryDataPromise}
-				<p>...computing</p>
-			{:then overviewAndDashboardData}
-				<section class="overview mb-24">
-					<Heading headingType="h2" customClass="mb-5">Overview</Heading>
-					<div class="grid grid-cols-12 gap-x-8">
-						<OverviewCard
-							color="bg-primary-400"
-							width="col-span-3"
-							title="Predicted Yearly base salary (CAD)"
-							value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.yearly)}
-						/>
+			<div
+				class="flex flex-col order-3 gap-4 p-2 col-span-full 2xl:col-span-4 xl:order-4 bg-secondary-300 rounded-xl xl:p-6"
+			>
+				<Heading headingType="h4"
+					>{`Average Salary in ${selectedValues['City']} by Industry`}</Heading
+				>
+				<Table
+					tableWidth="col-span-4"
+					tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
+					tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
+					rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry.user}
+				/>
+			</div>
 
-						<OverviewCard
-							color="bg-secondary-400"
-							width="col-span-3"
-							title="Predicted Hourly rate for 40-hour week"
-							value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.hourly)}
-						/>
+			<div
+				class="order-4 p-2 col-span-full 2xl:col-span-6 xl:order-3 min-h-96 xl:p-6 bg-secondary-300 rounded-xl"
+			>
+				<Bar
+					title={`Average Salary (CAD) per Title in ${selectedValues['City']}`}
+					objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
+					barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
+				/>
+			</div>
+		</div>
+	</section>
+	{#if salaryDataPromise}
+		{#await salaryDataPromise}
+			<p>...computing</p>
+		{:then overviewAndDashboardData}
+			<section class="mb-24 overview">
+				<Heading headingType="h2" customClass="mb-5">Overview</Heading>
+				<div class="grid grid-cols-12 gap-x-8">
+					<OverviewCard
+						color="bg-primary-400"
+						width="col-span-3"
+						title="Predicted Yearly base salary (CAD)"
+						value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.yearly)}
+					/>
 
-						<OverviewCard
-							color="bg-primary-400"
-							width="col-span-3"
-							title="Average Yearly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-								.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-								.userExperience} Exp. (CAD)"
-							value={formatNumberToDollar(
-								overviewAndDashboardData.overview.averageSalaryForCity.yearly
-							)}
-						/>
+					<OverviewCard
+						color="bg-secondary-400"
+						width="col-span-3"
+						title="Predicted Hourly rate for 40-hour week"
+						value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.hourly)}
+					/>
 
-						<OverviewCard
-							color="bg-secondary-400"
-							width="col-span-3"
-							title="Average Hourly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-								.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-								.userExperience} Exp. (CAD)"
-							value={formatNumberToDollar(
-								overviewAndDashboardData.overview.averageSalaryForCity.hourly
-							)}
+					<OverviewCard
+						color="bg-primary-400"
+						width="col-span-3"
+						title="Average Yearly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
+							.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
+							.userExperience} Exp. (CAD)"
+						value={formatNumberToDollar(
+							overviewAndDashboardData.overview.averageSalaryForCity.yearly
+						)}
+					/>
+
+					<OverviewCard
+						color="bg-secondary-400"
+						width="col-span-3"
+						title="Average Hourly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
+							.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
+							.userExperience} Exp. (CAD)"
+						value={formatNumberToDollar(
+							overviewAndDashboardData.overview.averageSalaryForCity.hourly
+						)}
+					/>
+				</div>
+			</section>
+			<section class="w-full dashboard">
+				<Heading headingType="h2" customClass="mb-5">Dashboard</Heading>
+				<p class="mb-5 text-base font-medium">
+					This dashboard serves as a visual representation of the data used to build the machine
+					learning model.
+				</p>
+				<div class="grid grid-cols-10 gap-8">
+					<div
+						class="flex flex-col gap-4 p-6 col-span-full 2xl:col-span-4 bg-secondary-300 rounded-xl"
+					>
+						<Heading headingType="h4"
+							>{`Average ${selectedValues['Title']} Salary in ${selectedValues['City']} by Experience`}</Heading
+						>
+						<Table
+							tableWidth="w-full"
+							tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
+							tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
+							rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerExperience.user}
 						/>
 					</div>
-				</section>
-				<section class="dashboard w-full">
-					<Heading headingType="h2" customClass="mb-5">Dashboard</Heading>
-					<p class="text-base font-medium mb-5">
-						This dashboard serves as a visual representation of the data used to build the machine
-						learning model.
-					</p>
-					<div class="grid grid-cols-10 gap-8">
-						<div class="col-span-4 flex flex-col gap-4 bg-secondary-300 rounded-xl p-6">
-							<Heading headingType="h4"
-								>{`Average ${selectedValues['Title']} Salary in ${selectedValues['City']} by Experience`}</Heading
-							>
-							<Table
-								tableWidth="w-full"
-								tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-								tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
-								rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerExperience.user}
-							/>
-						</div>
 
-						<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
-							<Bar
-								title={`Average ${selectedValues['Title']} Salary in Canadian Cities`}
-								objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
-								barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
-							/>
-						</div>
-						<div class="col-span-6 p-6 bg-secondary-300 rounded-xl">
-							<Bar
-								title={`Average Salary per Title in ${selectedValues['City']}`}
-								objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
-								barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
-							/>
-						</div>
-						<div class="col-span-4 flex flex-col gap-4 bg-secondary-300 rounded-xl p-6">
-							<Heading headingType="h4"
-								>{`Average Salary in ${selectedValues['City']} by Industry`}</Heading
-							>
-							<Table
-								tableWidth="col-span-4"
-								tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-								tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
-								rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry.user}
-							/>
-						</div>
+					<div class="p-6 col-span-full 2xl:col-span-6 bg-secondary-300 rounded-xl">
+						<Bar
+							title={`Average ${selectedValues['Title']} Salary in Canadian Cities`}
+							objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
+							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
+						/>
 					</div>
-				</section>
-			{:catch error}
-				<p style="color: red">Error!!!</p>
-			{/await}
-		{:else}
-			<Heading headingType="h2">No data to display</Heading>
-			<p class="text-base font-medium mt-5">Please use the fields above to evaluate your salary.</p>
-		{/if}
-	</main>
-</div>
+					<div class="p-6 col-span-full 2xl:col-span-6 bg-secondary-300 rounded-xl">
+						<Bar
+							title={`Average Salary per Title in ${selectedValues['City']}`}
+							objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
+							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
+						/>
+					</div>
+					<div
+						class="flex flex-col gap-4 p-6 col-span-full 2xl:col-span-4 bg-secondary-300 rounded-xl"
+					>
+						<Heading headingType="h4"
+							>{`Average Salary in ${selectedValues['City']} by Industry`}</Heading
+						>
+						<Table
+							tableWidth="col-span-4"
+							tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
+							tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
+							rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry.user}
+						/>
+					</div>
+				</div>
+			</section>
+		{:catch error}
+			<p style="color: red">Error!!!</p>
+		{/await}
+	{:else}
+		<Heading headingType="h2">No data to display</Heading>
+		<p class="mt-5 text-base font-medium">Please use the fields above to evaluate your salary.</p>
+	{/if}
+</main>
