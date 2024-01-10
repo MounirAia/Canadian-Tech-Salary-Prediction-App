@@ -176,7 +176,7 @@
 	}
 </script>
 
-<main class="w-full px-4 mb-24 xl:px-8">
+<main class="w-full mb-24">
 	<section class="w-full mb-24 fields">
 		<Heading headingType="h2" customClass="mb-5">Evaluate</Heading>
 		<form class="grid mb-24 form-grid gap-x-8 gap-y-4" on:submit|preventDefault={onSubmit}>
