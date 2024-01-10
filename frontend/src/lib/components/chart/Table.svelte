@@ -44,11 +44,11 @@
 	}
 </script>
 
-<table class="{tableWidth} min-h-96">
+<table class="{tableWidth} min-h-48 xl:min-h-96">
 	<thead>
-		<tr class="text-left text-sm font-semibold tracking-wide text-leftuppercase bg-secondary-400">
+		<tr class="text-sm font-semibold tracking-wide text-left text-leftuppercase bg-secondary-400">
 			{#each tableColumns as column}
-				<th class="px-4 py-3 border border-gray-300">{column}</th>
+				<th class="p-2 border border-gray-300 xl:px-4 xl:py-3">{column}</th>
 			{/each}
 		</tr>
 	</thead>
@@ -56,7 +56,7 @@
 		{#each tableRows as row}
 			<tr class={row[0] === rowToHighlight ? 'bg-indigo-100' : ''}>
 				{#each row as field}
-					<td class="px-4 text-ms font-medium border border-gray-300">{field}</td>
+					<td class="px-2 py-1 font-medium border border-gray-300 xl:px-4 text-ms">{field}</td>
 				{/each}
 			</tr>
 		{/each}
