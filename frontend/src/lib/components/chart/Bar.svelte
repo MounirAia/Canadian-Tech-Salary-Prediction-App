@@ -26,11 +26,6 @@
 	if (objData) {
 		data = Object.values(objData);
 		labels = Object.keys(objData);
-		const unecessaryIndex = labels.indexOf('user');
-		if (unecessaryIndex > -1) {
-			labels.splice(unecessaryIndex, 1);
-			data.splice(unecessaryIndex, 1);
-		}
 
 		if (barToHighlight) {
 			backgroundColor = [];

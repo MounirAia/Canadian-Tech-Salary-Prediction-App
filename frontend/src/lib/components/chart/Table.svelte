@@ -27,7 +27,6 @@
 	// 						yearly: 65562.41,
 	// 						hourly: 45.42
 	// 					},
-	// 					user: '5 to 9 years'
 	// 				}
 	if (tableData) {
 		tableRows = Object.entries(tableData).map(([key, value]) => {
