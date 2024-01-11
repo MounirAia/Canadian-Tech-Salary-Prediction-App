@@ -92,7 +92,7 @@ class CollectionCanada:
             yearly = dbOutput[0]["AverageSalary"]
             hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
             output = {"yearly": round(yearly, 2), "hourly": round(
-                hourly, 2), "userCity": City, "userExperience": Experience}
+                hourly, 2)}
 
         return output
 
@@ -104,7 +104,6 @@ class CollectionCanada:
 
         City = parameters["City"]
         Title = parameters["Title"]
-        Experience = parameters["Experience"]
 
         output = {}
         uniqueValuesOfExperienceColumns = (await CollectionCanada.GetColumnsAndUniqueValues())["Experience"]
@@ -139,8 +138,6 @@ class CollectionCanada:
             hourly = CanadaSalaryMLModel.ComputeHourlySalary(yearly)
             output[item["_id"]] = {"yearly": round(
                 yearly, 2), "hourly": round(hourly, 2)}
-
-        output["user"] = Experience
 
         return output
 
@@ -205,8 +202,6 @@ class CollectionCanada:
         output = {k: v for k, v in sorted(
             output.items(), key=lambda item: item[1], reverse=True)}
 
-        output["user"] = City
-
         return output
 
     @staticmethod
@@ -270,8 +265,6 @@ class CollectionCanada:
 
         output = {k: v for k, v in sorted(
             output.items(), key=lambda item: item[1], reverse=True)}
-
-        output["user"] = Title
 
         return output
 
@@ -340,7 +333,5 @@ class CollectionCanada:
 
         output = {k: v for k, v in sorted(
             output.items(), key=lambda item: item[1]["yearly"], reverse=True)}
-
-        output["user"] = Industry
 
         return output

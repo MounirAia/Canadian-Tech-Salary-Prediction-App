@@ -37,7 +37,7 @@ async def salary_info():
         CollectionCanada.GetAverageSalaryForCity(
             {"City": data["City"], "Experience": data["Experience"]}),
         CollectionCanada.GetAverageSalaryForACityAndTitleByExperience(
-            {"City": data["City"], "Title": data["Title"], "Experience": data["Experience"]}),
+            {"City": data["City"], "Title": data["Title"]}),
         CollectionCanada.GetAverageSalaryForATitleByCity(
             {"Title": data["Title"], "City": data["City"]}),
         CollectionCanada.GetAverageSalaryForACityByTitle(
@@ -47,6 +47,8 @@ async def salary_info():
     )
 
     salaries = CanadaSalaryMLModel.predict(data)
+    # Send back the requested data (useful for the frontend)
+    res["user"] = data
 
     # Overview:
 

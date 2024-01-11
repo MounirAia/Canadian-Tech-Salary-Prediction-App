@@ -22,8 +22,6 @@
 			averageSalaryForCity: {
 				yearly: number;
 				hourly: number;
-				userCity: string;
-				userExperience: string;
 			};
 		};
 		dashboard: {
@@ -55,6 +53,9 @@
 					| null;
 				user: string;
 			};
+		};
+		user: {
+			[key: string]: string;
 		};
 	}
 
@@ -157,7 +158,7 @@
 			});
 	});
 
-	let salaryDataPromise: Promise<any> | undefined;
+	let salaryDataPromise: Promise<OverviewAndDashboardData> | undefined;
 
 	let isFetchingSalaryData = false;
 	function ToggleDisableEvaluateButton() {
@@ -329,9 +330,8 @@
 					<OverviewCard
 						color="bg-primary-400"
 						width="col-span-3"
-						title="Average Yearly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-							.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-							.userExperience} Exp. (CAD)"
+						title="Average Yearly Rate: {overviewAndDashboardData.user
+							.City}, {overviewAndDashboardData.user.Experience} Exp. (CAD)"
 						value={formatNumberToDollar(
 							overviewAndDashboardData.overview.averageSalaryForCity.yearly
 						)}
@@ -340,9 +340,8 @@
 					<OverviewCard
 						color="bg-secondary-400"
 						width="col-span-3"
-						title="Average Hourly Rate: {overviewAndDashboardData.overview.averageSalaryForCity
-							.userCity}, {overviewAndDashboardData.overview.averageSalaryForCity
-							.userExperience} Exp. (CAD)"
+						title="Average Hourly Rate:{overviewAndDashboardData.user
+							.City}, {overviewAndDashboardData.user.Experience} Exp. (CAD)"
 						value={formatNumberToDollar(
 							overviewAndDashboardData.overview.averageSalaryForCity.hourly
 						)}
@@ -360,13 +359,13 @@
 						class="flex flex-col order-1 gap-4 p-2 col-span-full 2xl:col-span-4 bg-secondary-300 rounded-xl xl:p-6"
 					>
 						<Heading headingType="h4"
-							>{`Average ${selectedValues['Title']} Salary in ${selectedValues['City']} by Experience`}</Heading
+							>{`Average ${overviewAndDashboardData.user.Title} Salary in ${overviewAndDashboardData.user.City} by Experience`}</Heading
 						>
 						<Table
 							tableWidth="w-full"
 							tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
 							tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
-							rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerExperience.user}
+							rowToHighlight={overviewAndDashboardData.user.Experience}
 						/>
 					</div>
 
@@ -374,32 +373,32 @@
 						class="order-2 p-2 col-span-full 2xl:col-span-6 min-h-96 xl:p-6 bg-secondary-300 rounded-xl"
 					>
 						<Bar
-							title={`Average ${selectedValues['Title']} Salary (CAD) in Canadian Cities`}
+							title={`Average ${overviewAndDashboardData.user.Title} Salary (CAD) in Canadian Cities`}
 							objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
-							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerCity?.user}
+							barToHighlight={overviewAndDashboardData.user.City}
 						/>
 					</div>
 					<div
-						class="flex flex-col order-3 gap-4 p-2 col-span-full 2xl:col-span-4 xl:order-4 bg-secondary-300 rounded-xl xl:p-6"
+						class="flex flex-col order-3 gap-4 p-2 col-span-full 2xl:col-span-4 2xl:order-4 bg-secondary-300 rounded-xl xl:p-6"
 					>
 						<Heading headingType="h4"
-							>{`Average Salary in ${selectedValues['City']} by Industry`}</Heading
+							>{`Average Salary in ${overviewAndDashboardData.user.City} by Industry`}</Heading
 						>
 						<Table
 							tableWidth="col-span-4"
 							tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
 							tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
-							rowToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry.user}
+							rowToHighlight={overviewAndDashboardData.user.Industry}
 						/>
 					</div>
 
 					<div
-						class="order-4 p-2 col-span-full 2xl:col-span-6 xl:order-3 min-h-96 xl:p-6 bg-secondary-300 rounded-xl"
+						class="order-4 p-2 col-span-full 2xl:col-span-6 2xl:order-3 min-h-96 xl:p-6 bg-secondary-300 rounded-xl"
 					>
 						<Bar
-							title={`Average Salary (CAD) per Title in ${selectedValues['City']}`}
+							title={`Average Salary (CAD) per Title in ${overviewAndDashboardData.user.City}`}
 							objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
-							barToHighlight={overviewAndDashboardData.dashboard.AverageSalaryPerTitle?.user}
+							barToHighlight={overviewAndDashboardData.user.Title}
 						/>
 					</div>
 				</div>
