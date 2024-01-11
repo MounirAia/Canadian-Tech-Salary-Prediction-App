@@ -404,7 +404,7 @@
 				</div>
 			</section>
 		{:catch error}
-			<p style="color: red">Error!!!</p>
+			<p style="color: red">Error!!! Retry please.</p>
 		{/await}
 	{:else}
 		<Heading headingType="h2">No data to display</Heading>
