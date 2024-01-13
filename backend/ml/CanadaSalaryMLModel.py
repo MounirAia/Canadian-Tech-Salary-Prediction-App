@@ -6,6 +6,7 @@ import pandas as pd
 
 class CanadaSalaryMLModel:
     model = None
+    usdToCad = 1.34
 
     @staticmethod
     def _getModel():
@@ -36,4 +37,4 @@ class CanadaSalaryMLModel:
 
     @staticmethod
     def ComputeHourlySalary(yearlySalary):
-        return (yearlySalary*1.33)/(12*4*5*8)
+        return (yearlySalary*CanadaSalaryMLModel.usdToCad)/(12*4*5*8)

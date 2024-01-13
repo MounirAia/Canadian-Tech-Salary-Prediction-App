@@ -323,7 +323,7 @@
 					<OverviewCard
 						color="bg-secondary-400"
 						width="col-span-3"
-						title="Predicted Hourly rate for 40-hour week"
+						title="Predicted Hourly rate for 40-hour week (CAD)"
 						value={formatNumberToDollar(overviewAndDashboardData.overview.userSalary.hourly)}
 					/>
 
@@ -404,6 +404,8 @@
 				</div>
 			</section>
 		{:catch error}
+			{ToggleDisableEvaluateButton()}
+
 			<p style="color: red">Error!!! Retry please.</p>
 		{/await}
 	{:else}
