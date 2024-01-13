@@ -332,9 +332,9 @@
 						width="col-span-3"
 						title="Average Yearly Rate: {overviewAndDashboardData.user
 							.City}, {overviewAndDashboardData.user.Experience} Exp. (CAD)"
-						value={formatNumberToDollar(
-							overviewAndDashboardData.overview.averageSalaryForCity.yearly
-						)}
+						value={overviewAndDashboardData.overview.averageSalaryForCity.yearly
+							? formatNumberToDollar(overviewAndDashboardData.overview.averageSalaryForCity.yearly)
+							: 'Not Enough Data'}
 					/>
 
 					<OverviewCard
@@ -342,9 +342,9 @@
 						width="col-span-3"
 						title="Average Hourly Rate:{overviewAndDashboardData.user
 							.City}, {overviewAndDashboardData.user.Experience} Exp. (CAD)"
-						value={formatNumberToDollar(
-							overviewAndDashboardData.overview.averageSalaryForCity.hourly
-						)}
+						value={overviewAndDashboardData.overview.averageSalaryForCity.hourly
+							? formatNumberToDollar(overviewAndDashboardData.overview.averageSalaryForCity.hourly)
+							: 'Not Enough Data'}
 					/>
 				</div>
 			</section>

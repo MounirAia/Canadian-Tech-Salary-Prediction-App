@@ -21,17 +21,13 @@
 
 <Navbar />
 
-<div class="min-h-screen mt-36 lg:mt-16 lg:ml-64 px-4 lg:px-8">
+<div class="min-h-screen px-4 mt-36 lg:mt-16 lg:ml-64 lg:px-8">
 	<slot />
 </div>
 
 <footer
 	class="grid w-full h-40 grid-cols-2 p-4 pl-8 border-t border-gray-300 lg:ml-64 lg:grid-cols-10 gap-x-8"
 >
-	<section class="flex flex-col col-span-1 gap-5 contact lg:col-span-2">
-		<h2 class="text-2xl font-medium">Contact</h2>
-		<a class="text-base hover:underline" href="mailto:m.bluth@example.com">Email</a>
-	</section>
 	<section class="flex flex-col col-span-1 gap-5 github lg:col-span-2">
 		<h2 class="text-2xl font-medium">Github</h2>
 		<a
