@@ -73,3 +73,34 @@ async def salary_info():
     res["dashboard"]["AverageSalaryPerIndustry"] = dashboardAverageSalaryPerIndustry
 
     return jsonify(res)
+
+
+@app.route("/api/canada", methods=['GET'])
+async def canada_data_info():
+    res = {}
+    numberFileProcessed = 25
+    numberRows, numberCity, numberTitles, salaryRangeDistribution, cityProportionDistribution, experienceProportionDistribution, companySizeProportionDistribution, industryProportionDistribution, titleProportionDistribution = await asyncio.gather(CollectionCanada.GetNumberRows(),
+                                                                                                                                                                                                                                                       CollectionCanada.GetNumberOfCities(),
+                                                                                                                                                                                                                                                       CollectionCanada.GetNumberOfTitles(),
+                                                                                                                                                                                                                                                       CollectionCanada.GetSalaryRangeDistribution(),
+                                                                                                                                                                                                                                                       CollectionCanada.GetProportionDistribution(
+        {"field": "City"}),
+        CollectionCanada.GetProportionDistribution(
+        {"field": "Experience"}),
+        CollectionCanada.GetProportionDistribution(
+        {"field": "Company Size"}),
+        CollectionCanada.GetProportionDistribution({"field": "Industry"}),
+        CollectionCanada.GetProportionDistribution({"field": "Title"}))
+
+    res["numberFileProcessed"] = numberFileProcessed
+    res["numberRows"] = numberRows
+    res["numberCity"] = numberCity
+    res["numberTitles"] = numberTitles
+    res["salaryRangeDistribution"] = salaryRangeDistribution
+    res["cityProportionDistribution"] = cityProportionDistribution
+    res["experienceProportionDistribution"] = experienceProportionDistribution
+    res["companySizeProportionDistribution"] = companySizeProportionDistribution
+    res["industryProportionDistribution"] = industryProportionDistribution
+    res["titleProportionDistribution"] = titleProportionDistribution
+
+    return jsonify(res)
