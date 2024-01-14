@@ -335,3 +335,190 @@ class CollectionCanada:
             output.items(), key=lambda item: item[1]["yearly"], reverse=True)}
 
         return output
+
+    @staticmethod
+    async def GetNumberRows():
+        collection = CollectionCanada._getCollection()
+        return await collection.count_documents({})
+
+    @staticmethod
+    async def GetNumberOfCities():
+        collection = CollectionCanada._getCollection()
+        return len(await collection.distinct("City"))
+
+    @staticmethod
+    async def GetNumberOfTitles():
+        collection = CollectionCanada._getCollection()
+        return len(await collection.distinct("Title"))
+
+    @staticmethod
+    async def GetSalaryRangeDistribution():
+        collection = CollectionCanada._getCollection()
+
+        pipeline = [
+            {
+                '$facet': {
+                    'salaryDistribution': [
+                        {
+                            '$bucketAuto': {
+                                'groupBy': '$Salary',
+                                'buckets': 10,
+                                'output': {
+                                    'count': {
+                                        '$sum': 1
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    'totalSalaryCount': [
+                        {
+                            '$count': 'Salary'
+                        }
+                    ]
+                }
+            }, {
+                '$project': {
+                    'salaryDistribution': {
+                        '$map': {
+                            'input': '$salaryDistribution',
+                            'in': {
+                                'range': '$$this._id',
+                                'count': '$$this.count',
+                                'proportion': {
+                                    '$divide': [
+                                        '$$this.count', {
+                                            '$arrayElemAt': [
+                                                '$totalSalaryCount.Salary', 0
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }, {
+                '$unwind': {
+                    'path': '$salaryDistribution'
+                }
+            }, {
+                '$project': {
+                    'range': {
+                        '$concat': [
+                            {
+                                '$toString': {
+                                    '$multiply': [
+                                        {
+                                            '$trunc': {
+                                                '$divide': [
+                                                    '$salaryDistribution.range.min', 1000
+                                                ]
+                                            }
+                                        }, 1000
+                                    ]
+                                }
+                            }, '-', {
+                                '$toString': {
+                                    '$multiply': [
+                                        {
+                                            '$trunc': {
+                                                '$divide': [
+                                                    '$salaryDistribution.range.max', 1000
+                                                ]
+                                            }
+                                        }, 1000
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    'proportion': {
+                        '$round': [
+                            '$salaryDistribution.proportion', 3
+                        ]
+                    }
+                }
+            }, {
+                '$sort': {
+                    'proportion': -1
+                }
+            }
+        ]
+
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
+        dbOutputDict = {item['range']: item['proportion'] for item in dbOutput}
+        return dbOutputDict
+
+    @staticmethod
+    async def GetProportionDistribution(parameters):
+        print(parameters)
+        field = parameters["field"]
+
+        collection = CollectionCanada._getCollection()
+
+        pipeline = [
+            {
+                '$facet': {
+                    'distribution': [
+                        {
+                            '$group': {
+                                '_id': f'${field}',
+                                'count': {
+                                    '$sum': 1
+                                }
+                            }
+                        }
+                    ],
+                    'totalCount': [
+                        {
+                            '$group': {
+                                '_id': None,
+                                'count': {
+                                    '$sum': 1
+                                }
+                            }
+                        }
+                    ]
+                }
+            }, {
+                '$unwind': {
+                    'path': '$distribution'
+                }
+            }, {
+                '$project': {
+                    f'{field}': '$distribution._id',
+                    'totalCount': {
+                        '$arrayElemAt': [
+                            '$totalCount', 0
+                        ]
+                    },
+                    'count': '$distribution.count'
+                }
+            }, {
+                '$project': {
+                    f'{field}': 1,
+                    'proportion': {
+                        '$round': [
+                            {
+                                '$divide': [
+                                    '$count', '$totalCount.count'
+                                ]
+                            }, 3
+                        ]
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'proportion': -1
+                }
+            }
+        ]
+
+        cursor = collection.aggregate(pipeline)
+        dbOutput = await cursor.to_list(length=None)
+        dbOutputDict = {item[f'{field}']: item['proportion']
+                        for item in dbOutput}
+        return dbOutputDict
