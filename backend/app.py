@@ -79,11 +79,11 @@ async def salary_info():
 async def canada_data_info():
     res = {}
     numberFileProcessed = 25
-    numberRows, numberCity, numberTitles, salaryRangeDistribution, cityProportionDistribution, experienceProportionDistribution, companySizeProportionDistribution, industryProportionDistribution, titleProportionDistribution = await asyncio.gather(CollectionCanada.GetNumberRows(),
-                                                                                                                                                                                                                                                       CollectionCanada.GetNumberOfCities(),
-                                                                                                                                                                                                                                                       CollectionCanada.GetNumberOfTitles(),
-                                                                                                                                                                                                                                                       CollectionCanada.GetSalaryRangeDistribution(),
-                                                                                                                                                                                                                                                       CollectionCanada.GetProportionDistribution(
+    numberRows, numberCities, numberTitles, salaryRangeDistribution, cityProportionDistribution, experienceProportionDistribution, companySizeProportionDistribution, industryProportionDistribution, titleProportionDistribution = await asyncio.gather(CollectionCanada.GetNumberRows(),
+                                                                                                                                                                                                                                                         CollectionCanada.GetNumberOfCities(),
+                                                                                                                                                                                                                                                         CollectionCanada.GetNumberOfTitles(),
+                                                                                                                                                                                                                                                         CollectionCanada.GetSalaryRangeDistribution(),
+                                                                                                                                                                                                                                                         CollectionCanada.GetProportionDistribution(
         {"field": "City"}),
         CollectionCanada.GetProportionDistribution(
         {"field": "Experience"}),
@@ -94,7 +94,7 @@ async def canada_data_info():
 
     res["numberFileProcessed"] = numberFileProcessed
     res["numberRows"] = numberRows
-    res["numberCity"] = numberCity
+    res["numberCities"] = numberCities
     res["numberTitles"] = numberTitles
     res["salaryRangeDistribution"] = salaryRangeDistribution
     res["cityProportionDistribution"] = cityProportionDistribution

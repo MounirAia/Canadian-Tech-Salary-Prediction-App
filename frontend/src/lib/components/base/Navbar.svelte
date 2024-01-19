@@ -15,11 +15,11 @@
 		{
 			name: 'Home',
 			link: '/'
+		},
+		{
+			name: 'Data',
+			link: '/data'
 		}
-		// {
-		// 	name: 'Data',
-		// 	link: '/data'
-		// }
 	];
 </script>
 
