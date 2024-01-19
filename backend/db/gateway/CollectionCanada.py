@@ -453,7 +453,6 @@ class CollectionCanada:
 
     @staticmethod
     async def GetProportionDistribution(parameters):
-        print(parameters)
         field = parameters["field"]
 
         collection = CollectionCanada._getCollection()

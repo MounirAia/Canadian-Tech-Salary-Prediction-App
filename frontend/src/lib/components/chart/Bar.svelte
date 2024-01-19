@@ -62,6 +62,16 @@
 				x: {
 					grid: {
 						display: false
+					},
+					ticks: {
+						callback: function (index) {
+							if (typeof index === 'string') return index;
+							const label = labels[index];
+							if (label.length > 20) {
+								return label.slice(0, 20) + '...';
+							}
+							return label;
+						}
 					}
 				},
 				y: {
