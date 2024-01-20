@@ -7,6 +7,7 @@
 	import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public';
 	import { onMount } from 'svelte';
 
+	// Select input options
 	let selectStatements: Map<string, { options: { output: string; value: string | number }[] }> =
 		new Map();
 
