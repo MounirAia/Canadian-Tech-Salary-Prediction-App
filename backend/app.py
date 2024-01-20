@@ -21,6 +21,7 @@ CORS(app, allow_origin=[os.getenv("ALLOWED_DOMAINS")])
 
 @app.route("/api/index")
 async def canada_info():
+    # Get the number of unique values for each column
     obj = await CollectionCanada.GetColumnsAndUniqueValues()
 
     return jsonify(obj)
