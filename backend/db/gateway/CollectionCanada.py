@@ -17,7 +17,6 @@ def _extract_first_number(s):
 
 class CollectionCanada:
     CollectionName = "Canada"
-    _columnsAndDistinctValues = None
 
     @staticmethod
     def _getCollection():
@@ -33,15 +32,11 @@ class CollectionCanada:
 
     @staticmethod
     async def GetColumnsAndUniqueValues():
-        if (CollectionCanada._columnsAndDistinctValues != None):
-            return CollectionCanada._columnsAndDistinctValues
-
         collection = CollectionCanada._getCollection()
         columns = await CollectionCanada.GetColumns()
         values_to_remove = ["_id", "Salary"]
         columns = list(filter(lambda x: x not in values_to_remove, columns))
-        CollectionCanada._columnsAndDistinctValues = {}
-
+        columnsAndDistinctValues = {}
         for column in columns:
             distinctValues = list(await collection.distinct(column))
             if (column == "Company Size" or column == "Experience"):
@@ -53,9 +48,9 @@ class CollectionCanada:
                 # Alphabetic sorting
                 distinctValues = sorted(distinctValues)
 
-            CollectionCanada._columnsAndDistinctValues[column] = distinctValues
+            columnsAndDistinctValues[column] = distinctValues
 
-        return CollectionCanada._columnsAndDistinctValues
+        return columnsAndDistinctValues
 
     @staticmethod
     async def GetAverageSalaryForCity(parameters: Dict[str, str]):

@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+from db.cache import MyCache
 from db.gateway.CollectionCanada import CollectionCanada
 from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
 from quart import Quart, jsonify, request
@@ -17,15 +18,23 @@ app = Quart(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 # To prevent flask from ordering the json keys returned by jsonify
 app.json.sort_keys = False
-CORS(app, allow_origin=os.getenv("ALLOWED_DOMAINS").split(","))
+CORS(app, allow_origin=os.getenv("ALLOWED_DOMAINS").split(
+    ","))
 
 
 @app.route("/api/index")
 async def canada_info():
     # Get the number of unique values for each column
-    obj = await CollectionCanada.GetColumnsAndUniqueValues()
+    res = {}
 
-    return jsonify(obj)
+    cachedValue = MyCache.get("/api/index")
+    if cachedValue:
+        return jsonify(cachedValue)
+
+    res["selectStatements"] = await CollectionCanada.GetColumnsAndUniqueValues()
+    MyCache.set("/api/index", res)
+
+    return jsonify(res)
 
 
 @app.route("/api/salary", methods=['POST'])
@@ -63,22 +72,25 @@ async def salary_info():
     # Dashboard: For each category, add a highlighted value for the frontend to know which one the user should compare with
 
     # 1) Get the salary info per experience for the given role and city
-    res["dashboard"]["AverageSalaryPerExperience"] = dashboardAverageSalaryPerExperience
+    res["dashboard"]["averageSalaryPerExperience"] = dashboardAverageSalaryPerExperience
 
     # 2) Get the average salary for the given role per city
-    res["dashboard"]["AverageSalaryPerCity"] = dashboardAverageSalaryPerCity
+    res["dashboard"]["averageSalaryPerCity"] = dashboardAverageSalaryPerCity
 
     # 3) Get the average salary per role for the given city
-    res["dashboard"]["AverageSalaryPerTitle"] = dashboardAverageSalaryPerTitle
+    res["dashboard"]["averageSalaryPerTitle"] = dashboardAverageSalaryPerTitle
 
     # 4) Get the salary info for a city some industry
-    res["dashboard"]["AverageSalaryPerIndustry"] = dashboardAverageSalaryPerIndustry
+    res["dashboard"]["averageSalaryPerIndustry"] = dashboardAverageSalaryPerIndustry
 
     return jsonify(res)
 
 
 @app.route("/api/canada", methods=['GET'])
 async def canada_data_info():
+    if MyCache.get("/api/canada") != None:
+        return jsonify(MyCache.get("/api/canada"))
+
     res = {}
     numberFileProcessed = 25
     numberRows, numberCities, numberTitles, salaryRangeDistribution, cityProportionDistribution, experienceProportionDistribution, companySizeProportionDistribution, industryProportionDistribution, titleProportionDistribution = await asyncio.gather(CollectionCanada.GetNumberRows(),
@@ -104,5 +116,7 @@ async def canada_data_info():
     res["companySizeProportionDistribution"] = companySizeProportionDistribution
     res["industryProportionDistribution"] = industryProportionDistribution
     res["titleProportionDistribution"] = titleProportionDistribution
+
+    MyCache.set("/api/canada", res)
 
     return jsonify(res)
