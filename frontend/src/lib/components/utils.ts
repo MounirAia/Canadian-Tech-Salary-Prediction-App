@@ -23,10 +23,8 @@ export class SessionStore {
 	};
 	public static Get(field: string, expectedType: keyof typeof SessionStore.parsers) {
 		let value = null;
-		console.log(field, expectedType);
 		if (browser) {
 			if (window.sessionStorage.getItem(field) !== null) {
-				console.log(window.sessionStorage.getItem(field));
 				value = SessionStore.parsers[expectedType](window.sessionStorage.getItem(field)!);
 			}
 		}
