@@ -1,4 +1,6 @@
-## Introduction    
+## Introduction
+The application can be accessed at: https://www.canada-tech-salary.tech/
+
 A web application capable of predicting the salary of an individual working in a tech for  a Canadian-based job.
 The goal of this document is to present an overview of the application. This app is for anyone who is thinking about or already working in a tech job at a company based in Canada.
 
@@ -36,6 +38,8 @@ Thus, to solve this problem, I changed the backend web framework to Quart and Mo
 
 This is a brief description of the few noticeable problems that I had to solve to build the dataset used for this application.
 I refer to "user" as the person who had answered the Stack Overflow Survey.
+
+A visual representation of the data used can be found at: https://www.canada-tech-salary.tech/data
 
 ### Data Collection
 
