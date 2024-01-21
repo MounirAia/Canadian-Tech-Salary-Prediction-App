@@ -3,7 +3,7 @@
 	import OverviewCard from '$components/base/OverviewCard.svelte';
 	import Bar from '$components/chart/Bar.svelte';
 	import Table from '$components/chart/Table.svelte';
-	import { formatNumberToDollar } from '$components/utils';
+	import { formatNumberToDollar, SessionStore } from '$components/utils';
 	import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public';
 	import { onMount } from 'svelte';
 
@@ -13,6 +13,9 @@
 
 	// Select input values to send to backend
 	let selectedValues: { [key: string]: string } = {};
+
+	let salaryDataPromise: Promise<OverviewAndDashboardData> | undefined;
+	let isFetchingSalaryData = false;
 
 	interface OverviewAndDashboardData {
 		overview: {
@@ -26,7 +29,7 @@
 			};
 		};
 		dashboard: {
-			AverageSalaryPerExperience: {
+			averageSalaryPerExperience: {
 				[key: string]:
 					| {
 							yearly: number;
@@ -36,15 +39,15 @@
 					| null;
 				user: string;
 			};
-			AverageSalaryPerCity: {
+			averageSalaryPerCity: {
 				[key: string]: string | number | null;
 				user: string;
 			};
-			AverageSalaryPerTitle: {
+			averageSalaryPerTitle: {
 				[key: string]: string | number | null;
 				user: string;
 			};
-			AverageSalaryPerIndustry: {
+			averageSalaryPerIndustry: {
 				[key: string]:
 					| {
 							yearly: number;
@@ -64,23 +67,31 @@
 		fetch(`${PUBLIC_BACKEND_DOMAIN}/api/index`)
 			.then((res) => res.json())
 			.then((data) => {
-				for (const key in data) {
+				for (const key in data['selectStatements']) {
 					const options = [];
 
-					for (const value of data[key]) {
+					for (const value of data['selectStatements'][key]) {
 						options.push({ output: value, value });
 					}
 					selectStatements.set(key, { options });
 
 					selectedValues[key] = '';
 				}
+
+				// Check if there is cached data in the session storage for the salary data
+				let cachedSalaryData = SessionStore.Get('salaryData', 'json');
+				if (cachedSalaryData) {
+					cachedSalaryData = cachedSalaryData as OverviewAndDashboardData;
+					salaryDataPromise = Promise.resolve(cachedSalaryData);
+					for (const key in cachedSalaryData.user) {
+						selectedValues[key] = cachedSalaryData.user[key];
+					}
+				}
+
 				selectStatements = new Map([...selectStatements]);
 			});
 	});
 
-	let salaryDataPromise: Promise<OverviewAndDashboardData> | undefined;
-
-	let isFetchingSalaryData = false;
 	function ToggleDisableEvaluateButton() {
 		// It returns nothing because I want to execute the function inside the {}
 		isFetchingSalaryData = !isFetchingSalaryData;
@@ -96,6 +107,10 @@
 			body: JSON.stringify(selectedValues)
 		});
 		const data = await res.json();
+
+		// Cache the data in the session storage
+		SessionStore.Set('salaryData', JSON.stringify(data));
+
 		return data;
 	}
 
@@ -200,7 +215,7 @@
 							<Table
 								tableWidth="w-full"
 								tableColumns={['Experience', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-								tableData={overviewAndDashboardData.dashboard.AverageSalaryPerExperience}
+								tableData={overviewAndDashboardData.dashboard.averageSalaryPerExperience}
 								rowToHighlight={overviewAndDashboardData.user.Experience}
 							/>
 						</div>
@@ -210,7 +225,7 @@
 						>
 							<Bar
 								title={`Average ${overviewAndDashboardData.user.Title} Salary (CAD) in Canadian Cities`}
-								objData={overviewAndDashboardData.dashboard.AverageSalaryPerCity}
+								objData={overviewAndDashboardData.dashboard.averageSalaryPerCity}
 								barToHighlight={overviewAndDashboardData.user.City}
 							/>
 						</div>
@@ -223,7 +238,7 @@
 							<Table
 								tableWidth="col-span-4"
 								tableColumns={['Industry', 'Yearly Salary (CAD)', 'Hourly Salary (CAD)']}
-								tableData={overviewAndDashboardData.dashboard.AverageSalaryPerIndustry}
+								tableData={overviewAndDashboardData.dashboard.averageSalaryPerIndustry}
 								rowToHighlight={overviewAndDashboardData.user.Industry}
 							/>
 						</div>
@@ -233,7 +248,7 @@
 						>
 							<Bar
 								title={`Average Salary (CAD) per Title in ${overviewAndDashboardData.user.City}`}
-								objData={overviewAndDashboardData.dashboard.AverageSalaryPerTitle}
+								objData={overviewAndDashboardData.dashboard.averageSalaryPerTitle}
 								barToHighlight={overviewAndDashboardData.user.Title}
 							/>
 						</div>
