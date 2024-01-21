@@ -14,9 +14,10 @@ if not (isProd):
 
 # Setting up the Quart app
 app = Quart(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 # To prevent flask from ordering the json keys returned by jsonify
 app.json.sort_keys = False
-CORS(app, allow_origin=[os.getenv("ALLOWED_DOMAINS")])
+CORS(app, allow_origin=os.getenv("ALLOWED_DOMAINS").split(","))
 
 
 @app.route("/api/index")
