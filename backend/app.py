@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+import httpx
 from db.cache import MyCache
 from db.gateway.CollectionCanada import CollectionCanada
 from ml.CanadaSalaryMLModel import CanadaSalaryMLModel
@@ -15,11 +16,24 @@ if not (isProd):
 
 # Setting up the Quart app
 app = Quart(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
 # To prevent flask from ordering the json keys returned by jsonify
 app.json.sort_keys = False
 CORS(app, allow_origin=os.getenv("ALLOWED_DOMAINS").split(
     ","))
+
+
+# Ping the server to keep it alive
+async def ping():
+    while True:
+        async with httpx.AsyncClient() as client:
+            # Send the request without awaiting the response
+            await client.get(f"{os.getenv('BACKEND_URL')}/api/index")
+        await asyncio.sleep(25*60)
+
+
+@app.before_serving
+async def startup():
+    app.add_background_task(ping)
 
 
 @app.route("/api/index")
