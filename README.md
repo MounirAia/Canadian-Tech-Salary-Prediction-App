@@ -1,7 +1,7 @@
 ## Introduction
 The application can be accessed at: https://www.canada-tech-salary.tech/
 
-The data preprocessing pipeline code can be found at: https://github.com/MounirAia/Canadian-Tech-Salary-Data/tree/main
+The data preprocessing pipeline code can be found at: [Repo Data Analysis](https://github.com/MounirAia/Canadian-Tech-Salary-Data/tree/main)
 
 A web application capable of predicting the salary of an individual working in a tech for  a Canadian-based job.
 The goal of this document is to present an overview of the application. This app is for anyone who is thinking about or already working in a tech job at a company based in Canada.
